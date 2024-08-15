@@ -12,36 +12,37 @@ import {
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../../components/ui/input";
 import { useMutation } from "@apollo/react-hooks";
-import { LOGIN_USER, REGISTER_USER } from "../../mutations/mutations";
+import { REGISTER_USER } from "../../mutations/mutations";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/context";
 import { useForm } from "../../utils/hooks";
 import { GraphQLFormattedError } from "graphql";
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState<readonly GraphQLFormattedError[]>([]);
 
-  function loginUserCallback() {
-    loginUser();
+  function registerUserCallback() {
+    registerUser();
   }
 
-  const { onChange, onSubmit, values } = useForm(loginUserCallback, {
+  const { onChange, onSubmit, values } = useForm(registerUserCallback, {
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
-  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
     onCompleted: (data) => {
-      const { loginUser: userData } = data;
+      const { registerUser: userData } = data;
       context.login(userData);
       navigate(ROUTES.DASHBOARD.DASHBOARD);
     },
     onError: ({ graphQLErrors }) => {
       setErrors(graphQLErrors);
     },
-    variables: { loginInput: values },
+    variables: { registerInput: values },
   });
 
   return (
@@ -52,53 +53,48 @@ export default function LoginPage() {
       </Link>
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Log in</CardTitle>
+          <CardTitle className="text-2xl">Sign up</CardTitle>
           <CardDescription>
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            <div className="grid gap-1">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                type="email"
-                name="email"
-                required
-                placeholder="kian@parpics.com"
-                onChange={onChange}
-              />
-            </div>
-            <div className="grid gap-1">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                type="password"
-                name="password"
-                required
-                placeholder="********"
-                onChange={onChange}
-              />
-            </div>
-
-            {errors.map(function (error, index) {
-              return (
-                <div key={index} className="text-sm text-red-500 text-center">
-                  {error.message}
-                </div>
-              );
-            })}
-
-            <Button className="w-full" onClick={onSubmit} disabled={loading}>
-              Login
-            </Button>
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              type="email"
+              name="email"
+              required
+              placeholder="kian@parpics.com"
+              onChange={onChange}
+            />
           </div>
-
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <button form="login-form" className="underline">
-              Sign up
-            </button>
+          <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              type="password"
+              name="password"
+              required
+              placeholder="********"
+              onChange={onChange}
+            />
           </div>
+          <div className="grid gap-2">
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Input
+              type="password"
+              name="confirmPassword"
+              required
+              placeholder="********"
+              onChange={onChange}
+            />
+          </div>
+          {errors.map(function (error, index) {
+            return <div key={index}>{error.message}</div>;
+          })}
+          <Button className="w-full" onClick={onSubmit} disabled={loading}>
+            Sign up
+          </Button>
         </CardContent>
       </Card>
     </section>

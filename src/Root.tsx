@@ -17,6 +17,7 @@ function lazyHelp<T extends Record<string, ComponentType<any>>>(
   );
 }
 const PricingPage = lazyHelp(() => import("./pages/public/PricingPage"));
+const SignUpPage = lazyHelp(() => import("./pages/public/SignUpPage"));
 const LoginPage = lazyHelp(() => import("./pages/public/LoginPage"));
 const Dashboard = lazyHelp(() => import("./pages/Dashboard"));
 const ClientsPage = lazyHelp(() => import("./pages/ClientsPage"));
@@ -36,6 +37,7 @@ export default function Root() {
           />
           <Route path={ROUTES.PRICING} element={<PricingPage />} />
           <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+          <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
           <Route
             path={ROUTES.DASHBOARD.DASHBOARD}
             element={
