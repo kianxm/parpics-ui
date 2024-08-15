@@ -1,13 +1,116 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 245 100% 98.3%;
+    --foreground: 245 10% 0.6%;
+
+    --muted: 245 10% 91.5%;
+    --muted-foreground: 245 5% 41.5%;
+
+    --popover: 245 10% 91.5%;
+    --popover-foreground: 245 10% 0.75%;
+
+    --card: 245 10% 91.5%;
+    --card-foreground: 245 10% 0.75%;
+
+    --border: 245 15% 89.6%;
+    --input: 245 15% 89.6%;
+
+    --primary: 245 100% 15%;
+    --primary-foreground: 245 2% 91.5%;
+
+    --secondary: 245 5% 95.75%;
+    --secondary-foreground: 245 7% 11.5%;
+
+    --accent: 245 5% 95.75%;
+    --accent-foreground: 245 7% 11.5%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 245 100% 15%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 255 56.55% 3.6%;
+    --foreground: 255 8.7% 97.25%;
+
+    --muted: 255 43.5% 13.5%;
+    --muted-foreground: 255 8.7% 54.5%;
+
+    --popover: 255 47.6% 5.8500000000000005%;
+    --popover-foreground: 255 8.7% 97.25%;
+
+    --card: 255 47.6% 5.8500000000000005%;
+    --card-foreground: 255 8.7% 97.25%;
+
+    --border: 255 43.5% 13.5%;
+    --input: 255 43.5% 13.5%;
+
+    --primary: 255 87% 45%;
+    --primary-foreground: 255 8.7% 97.25%;
+
+    --secondary: 255 43.5% 13.5%;
+    --secondary-foreground: 255 8.7% 97.25%;
+
+    --accent: 255 43.5% 13.5%;
+    --accent-foreground: 255 8.7% 97.25%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 255 8.7% 97.25%;
+
+    --ring: 255 87% 45%;
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.theme-custom {
+  /* Name: custom color palette
+     Author: Ilias Ism
+     URL: https://gradient.page */
+
+  /* CSS: .bg-gradient { background: var(--gradient) } */
+  --gradient: #fjfjd9;
+
+  --background: 255 56.55% 3.6%;
+  --foreground: 255 8.7% 97.25%;
+
+  --muted: 255 43.5% 13.5%;
+  --muted-foreground: 255 8.7% 54.5%;
+
+  --popover: 255 47.6% 5.8500000000000005%;
+  --popover-foreground: 255 8.7% 97.25%;
+
+  --card: 255 47.6% 5.8500000000000005%;
+  --card-foreground: 255 8.7% 97.25%;
+
+  --border: 255 43.5% 13.5%;
+  --input: 255 43.5% 13.5%;
+
+  --primary: 255 87% 45%;
+  --primary-foreground: 255 8.7% 97.25%;
+
+  --secondary: 255 43.5% 13.5%;
+  --secondary-foreground: 255 8.7% 97.25%;
+
+  --accent: 255 43.5% 13.5%;
+  --accent-foreground: 255 8.7% 97.25%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 255 8.7% 97.25%;
+
+  --ring: 255 87% 45%;
 }
