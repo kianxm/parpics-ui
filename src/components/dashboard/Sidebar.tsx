@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   IconArrowLeft,
   IconBrandTabler,
@@ -7,15 +7,23 @@ import {
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { PersonStanding } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "../../lib/utils";
 import { ROUTES } from "../../routes";
 import { Button } from "../ui/button";
 import { SidebarBody, SidebarLink, SidebarProvider } from "../ui/sidebar";
 import { LOGO_ALT, LOGO_SVG_PATH } from "../../utils/constants";
+import { AuthContext } from "../../context/context";
 
 export function NewSidebar({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+
+  const onLogout = () => {
+    logout();
+    navigate(ROUTES.SITE);
+  };
 
   const SidebarLinks = [
     {
@@ -66,11 +74,9 @@ export function NewSidebar({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <div>
-            <form>
-              <Button variant="custom" className="mx-0 px-0">
-                <IconArrowLeft className="h-5 w-5 text-black" />
-              </Button>
-            </form>
+            <Button variant="custom" className="mx-0 px-0" onClick={onLogout}>
+              <IconArrowLeft className="h-5 w-5 text-black" />
+            </Button>
             <SidebarLink
               link={{
                 label: "Username here",

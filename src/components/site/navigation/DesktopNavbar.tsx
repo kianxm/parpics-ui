@@ -12,7 +12,7 @@ export default function DesktopNavbar() {
           <span className="text-xl font-bold">Parpics.</span>
         </Link>
       </aside>
-      <aside className="flex items-center gap-6 px-4 py-2">
+      <aside className="flex items-center gap-6 px-1">
         <Link to={ROUTES.PRICING}>
           <span className="font-medium">Pricing</span>
         </Link>
