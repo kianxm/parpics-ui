@@ -12,7 +12,7 @@ import {
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../../components/ui/input";
 import { useMutation } from "@apollo/react-hooks";
-import { LOGIN_USER } from "../../mutations/mutations";
+import { LOGIN_USER } from "../../mutations/user";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/context";
 import { useForm } from "../../utils/hooks";
