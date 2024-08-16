@@ -1,4 +1,6 @@
 export interface Client {
+  id: string;
+  userId: string;
   name: string;
   link: string;
   accessCode: number;
@@ -6,4 +8,6 @@ export interface Client {
   date: string;
   hasPaid: boolean;
   photoCount: number | null;
+  createdAt: string;
+  updatedAt: string;
 }
