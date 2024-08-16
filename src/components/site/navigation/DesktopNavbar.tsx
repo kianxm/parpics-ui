@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import { ROUTES } from "../../../routes";
 import { LOGO_ALT, LOGO_SVG_PATH } from "../../../utils/constants";
 import { Button } from "../../ui/button";
+import { AuthContext } from "../../../context/context";
+import { useContext } from "react";
 
 export default function DesktopNavbar() {
+  const { user } = useContext(AuthContext);
+
   return (
     <div className="flex mt-6 items-center justify-between bg-gray-200 mx-auto px-2 py-2 rounded-full max-w-xl w-full">
       <aside>
@@ -16,9 +20,15 @@ export default function DesktopNavbar() {
         <Link to={ROUTES.PRICING}>
           <span className="font-medium">Pricing</span>
         </Link>
-        <a href={ROUTES.LOGIN}>
-          <span className="font-medium">Log in</span>
-        </a>
+        {!user ? (
+          <Link to={ROUTES.LOGIN}>
+            <span className="font-medium">Log in</span>
+          </Link>
+        ) : (
+          <Link to={ROUTES.DASHBOARD.DASHBOARD}>
+            <span className="font-medium">Dashboard</span>
+          </Link>
+        )}
         <Button className="rounded-full bg-black">Join for free</Button>
       </aside>
     </div>

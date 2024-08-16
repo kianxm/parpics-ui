@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../../ui/button";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../../routes";
 import { LOGO_ALT, LOGO_SVG_PATH } from "../../../utils/constants";
+import { AuthContext } from "../../../context/context";
 
 export default function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useContext(AuthContext);
 
   return (
     <div className="w-full px-6 mt-2 flex flex-col">
@@ -34,9 +36,15 @@ export default function MobileNavbar() {
             <Link to={ROUTES.PRICING} className="py-2">
               <span className="font-medium">Pricing</span>
             </Link>
-            <a href={ROUTES.LOGIN} className="py-2">
-              <span className="font-medium">Log in</span>
-            </a>
+            {!user ? (
+              <Link to={ROUTES.LOGIN} className="py-2">
+                <span className="font-medium">Log in</span>
+              </Link>
+            ) : (
+              <Link to={ROUTES.DASHBOARD.DASHBOARD} className="py-2">
+                Dashboard
+              </Link>
+            )}
             <Button className="rounded-lg bg-black mt-2">Join for free</Button>
           </div>
         )}
