@@ -59,42 +59,46 @@ export default function SignUpPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              type="email"
-              name="email"
-              required
-              placeholder="kian@parpics.com"
-              onChange={onChange}
-            />
+          <div className="grid gap-4">
+            <div className="grid gap-1">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                type="email"
+                name="email"
+                required
+                placeholder="kian@parpics.com"
+                onChange={onChange}
+              />
+            </div>
+            <div className="grid gap-1">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                type="password"
+                name="password"
+                required
+                placeholder="********"
+                onChange={onChange}
+              />
+            </div>
+            <div className="grid gap-1">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input
+                type="password"
+                name="confirmPassword"
+                required
+                placeholder="********"
+                onChange={onChange}
+              />
+            </div>
+
+            {errors.map(function (error, index) {
+              return <div key={index}>{error.message}</div>;
+            })}
+
+            <Button className="w-full" onClick={onSubmit} disabled={loading}>
+              Sign up
+            </Button>
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              type="password"
-              name="password"
-              required
-              placeholder="********"
-              onChange={onChange}
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <Input
-              type="password"
-              name="confirmPassword"
-              required
-              placeholder="********"
-              onChange={onChange}
-            />
-          </div>
-          {errors.map(function (error, index) {
-            return <div key={index}>{error.message}</div>;
-          })}
-          <Button className="w-full" onClick={onSubmit} disabled={loading}>
-            Sign up
-          </Button>
         </CardContent>
       </Card>
     </section>

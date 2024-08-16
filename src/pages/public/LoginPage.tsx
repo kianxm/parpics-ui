@@ -12,7 +12,7 @@ import {
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../../components/ui/input";
 import { useMutation } from "@apollo/react-hooks";
-import { LOGIN_USER, REGISTER_USER } from "../../mutations/mutations";
+import { LOGIN_USER } from "../../mutations/mutations";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/context";
 import { useForm } from "../../utils/hooks";
@@ -95,9 +95,9 @@ export default function LoginPage() {
 
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <button form="login-form" className="underline">
+            <Link to={ROUTES.SIGN_UP} className="underline">
               Sign up
-            </button>
+            </Link>
           </div>
         </CardContent>
       </Card>
