@@ -15,3 +15,19 @@ export const getAllClients = gql`
     }
   }
 `;
+
+export const getAllClientsByUserId = gql`
+  query GetAllClientsByUserId($userId: ID!) {
+    getAllClientsByUserId(userId: $userId) {
+      name
+      link
+      accessCode
+      location
+      date
+      hasPaid
+      createdAt
+      updatedAt
+      photoCount
+    }
+  }
+`;
