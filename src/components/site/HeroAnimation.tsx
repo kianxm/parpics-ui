@@ -14,7 +14,7 @@ export default function EmojiAnimation() {
     }, 2500);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [allIngredients.length]);
 
   return (
     <AnimatePresence mode="wait">
