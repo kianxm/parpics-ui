@@ -8,8 +8,8 @@ export function uriClients() {
   return generatePath(ROUTES.CLIENTS.CLIENTS);
 }
 
-export function uriClient(id: number | string) {
-  return generatePath(ROUTES.CLIENTS.CLIENT, { params: { id } });
+export function uriClient(clientId: number | string) {
+  return generatePath(ROUTES.CLIENTS.CLIENT, { params: { clientId } });
 }
 
 export function uriClientCreate() {
