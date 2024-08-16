@@ -19,3 +19,17 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const CREATE_CLIENT = gql`
+  mutation CreateClient($clientInput: ClientInput, $userId: ID!) {
+    createClient(clientInput: $clientInput, userId: $userId) {
+      name
+      date
+      link
+      accessCode
+      location
+      hasPaid
+      userId
+    }
+  }
+`;
