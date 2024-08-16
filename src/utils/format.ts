@@ -35,3 +35,7 @@ export function formatSize(size: number) {
 export function bytesToMB(bytes: number) {
   return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 }
+
+export function convertToSlug(name: string) {
+  return name.toLowerCase().replace(/ /g, "-");
+}
