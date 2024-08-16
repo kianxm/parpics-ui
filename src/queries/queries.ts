@@ -19,6 +19,26 @@ export const getAllClients = gql`
 export const getAllClientsByUserId = gql`
   query GetAllClientsByUserId($userId: ID!) {
     getAllClientsByUserId(userId: $userId) {
+      id
+      userId
+      name
+      link
+      accessCode
+      location
+      date
+      hasPaid
+      createdAt
+      updatedAt
+      photoCount
+    }
+  }
+`;
+
+export const getClient = gql`
+  query GetClient($clientId: ID!) {
+    getClient(clientId: $clientId) {
+      id
+      userId
       name
       link
       accessCode
