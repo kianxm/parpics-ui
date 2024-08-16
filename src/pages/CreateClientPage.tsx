@@ -8,9 +8,8 @@ import {
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
-import { Checkbox } from "../components/ui/checkbox";
 import { useMutation } from "@apollo/client";
-import { CREATE_CLIENT } from "../mutations/mutations";
+import { CREATE_CLIENT } from "../mutations/client";
 import { GraphQLFormattedError } from "graphql";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,8 +22,6 @@ export default function CreateClientPage() {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [errors, setErrors] = useState<readonly GraphQLFormattedError[]>([]);
-
-  console.log(user);
 
   function createClientCallback() {
     createClient();
@@ -40,9 +37,8 @@ export default function CreateClientPage() {
   });
 
   const [createClient, { loading }] = useMutation(CREATE_CLIENT, {
-    onCompleted: (data) => {
+    onCompleted: () => {
       navigate(ROUTES.CLIENTS.CLIENTS);
-      console.log(data);
     },
     onError: ({ graphQLErrors }) => {
       setErrors(graphQLErrors);
@@ -89,6 +85,7 @@ export default function CreateClientPage() {
                 type="text"
                 required
                 onChange={onChange}
+                autoComplete="off"
               />
             </div>
             <div className="sm:col-span-1">
@@ -99,6 +96,7 @@ export default function CreateClientPage() {
                 type="text"
                 required
                 onChange={onChange}
+                autoComplete="off"
               />
             </div>
             <div className="sm:col-span-1">
@@ -109,6 +107,7 @@ export default function CreateClientPage() {
                 type="text"
                 required
                 onChange={onChange}
+                autoComplete="off"
               />
             </div>
             <div className="sm:col-span-2 flex gap-4 items-center mt-3 mb-1">

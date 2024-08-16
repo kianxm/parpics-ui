@@ -10,37 +10,30 @@ import { Button } from "../ui/button";
 import { CLIENT_PAID, CLIENT_UNPAID } from "../../utils/constants";
 import { Trash } from "lucide-react";
 import Tag from "../ui/tag";
-import { convertToSlug, formatDate } from "../../utils/format";
+import { formatDate } from "../../utils/format";
 import { Client } from "../../types/client";
 import { uriClient } from "../../utils/uri";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { DELETE_CLIENT } from "../../mutations/client";
 
 interface ClientTableProps {
   clients: Client[];
+  refetch: () => void;
 }
 
-export default function ClientTable({ clients }: ClientTableProps) {
+export default function ClientTable({ clients, refetch }: ClientTableProps) {
   const navigate = useNavigate();
+  const [deleteClientMutation] = useMutation(DELETE_CLIENT);
 
-  // const handleDelete = async (clientId: number) => {
-  //   setIsLoading(true);
-  //   try {
-  //     // await deleteClient(clientId);
-  //     toast({
-  //       title: "Success!",
-  //       description: "Client has been deleted.",
-  //     });
-  //     // Optionally, you can refresh the client list or navigate
-  //     // router.refresh() or router.push('/some-path')
-  //   } catch (error) {
-  //     toast({
-  //       title: "Error",
-  //       description: "Failed to delete the client.",
-  //     });
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+  const handleDelete = async (clientId: string) => {
+    try {
+      await deleteClientMutation({ variables: { clientId } });
+      refetch();
+    } catch (error) {
+      throw new Error("Failed to delete client");
+    }
+  };
 
   return (
     <Table className="w-full">
@@ -62,7 +55,7 @@ export default function ClientTable({ clients }: ClientTableProps) {
           <TableRow
             key={index}
             className="cursor-pointer text-left"
-            onClick={() => navigate(uriClient(convertToSlug(client.name)))}
+            onClick={() => navigate(uriClient(client.id))}
           >
             <TableCell className="whitespace-nowrap">{client.name}</TableCell>
             <TableCell className="whitespace-nowrap">{client.link}</TableCell>
@@ -89,10 +82,10 @@ export default function ClientTable({ clients }: ClientTableProps) {
               <Button
                 size={"icon"}
                 className="text-foreground bg-transparent hover:bg-red-500 hover:text-white"
-                // onClick={(e) => {
-                //   e.stopPropagation();
-                //   handleDelete(client.id);
-                // }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(client.id);
+                }}
               >
                 <Trash size={16} />
               </Button>
