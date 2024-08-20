@@ -3,8 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import { ROUTES } from "./routes";
 
 import Site from "./pages/public/Site";
-import AuthLayout from "./layouts/AuthLayout";
+// import AuthLayout from "./layouts/AuthLayout";
 import PublicLayout from "./layouts/PublicLayout";
+import NewLayout from "./layouts/NewLayout";
+
 import CreateClientPage from "./pages/CreateClientPage";
 import ProtectedRoute from "./lib/ProtectedRoute";
 
@@ -29,75 +31,73 @@ const ViewAlbumPage = lazyHelp(() => import("./pages/user/ViewAlbumPage"));
 
 export default function Root() {
   return (
-    <div className="flex flex-col h-screen overflow-x-hidden">
-      <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route
-            path={ROUTES.SITE}
-            element={
-              <PublicLayout>
-                <Site />
-              </PublicLayout>
-            }
-          />
-          <Route path={ROUTES.PRICING} element={<PricingPage />} />
-          <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-          <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
+    <Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        <Route
+          path={ROUTES.SITE}
+          element={
+            <PublicLayout>
+              <Site />
+            </PublicLayout>
+          }
+        />
+        <Route path={ROUTES.PRICING} element={<PricingPage />} />
+        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+        <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
 
-          <Route path={ROUTES.USER_ACCESS} element={<UserAccessPage />} />
+        <Route path={ROUTES.USER_ACCESS} element={<UserAccessPage />} />
 
-          <Route path={ROUTES.USER_ALBUM} element={<ViewAlbumPage />} />
+        <Route path={ROUTES.USER_ALBUM} element={<ViewAlbumPage />} />
 
-          <Route
-            path={ROUTES.DASHBOARD.DASHBOARD}
-            element={
-              <ProtectedRoute
-                element={
-                  <AuthLayout>
-                    <Dashboard />
-                  </AuthLayout>
-                }
-              />
-            }
-          />
-          <Route
-            path={ROUTES.CLIENTS.CLIENTS}
-            element={
-              <ProtectedRoute
-                element={
-                  <AuthLayout>
-                    <ClientsPage />
-                  </AuthLayout>
-                }
-              />
-            }
-          />
-          <Route
-            path={ROUTES.CLIENTS.CREATE}
-            element={
-              <ProtectedRoute
-                element={
-                  <AuthLayout>
-                    <CreateClientPage />
-                  </AuthLayout>
-                }
-              />
-            }
-          />
-          <Route
-            path={ROUTES.CLIENTS.CLIENT}
-            element={
-              <ProtectedRoute
-                element={
-                  <AuthLayout>
-                    <ClientPage />
-                  </AuthLayout>
-                }
-              />
-            }
-          />
-        </Routes>
-      </Suspense>
-    </div>
+        <Route
+          path={ROUTES.DASHBOARD.DASHBOARD}
+          element={
+            <ProtectedRoute
+              element={
+                <NewLayout>
+                  <Dashboard />
+                </NewLayout>
+              }
+            />
+          }
+        />
+        <Route
+          path={ROUTES.CLIENTS.CLIENTS}
+          element={
+            <ProtectedRoute
+              element={
+                <NewLayout>
+                  <ClientsPage />
+                </NewLayout>
+              }
+            />
+          }
+        />
+        <Route
+          path={ROUTES.CLIENTS.CREATE}
+          element={
+            <ProtectedRoute
+              element={
+                <NewLayout>
+                  <CreateClientPage />
+                </NewLayout>
+              }
+            />
+          }
+        />
+        <Route
+          path={ROUTES.CLIENTS.CLIENT}
+          element={
+            <ProtectedRoute
+              element={
+                <NewLayout>
+                  <ClientPage />
+                </NewLayout>
+              }
+            />
+          }
+        />
+      </Routes>
+    </Suspense>
   );
 }

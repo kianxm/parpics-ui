@@ -41,8 +41,8 @@ export default function ClientPage() {
 
   return (
     <>
-      <div className="flex justify-between mx-4">
-        <span className="font-semibold text-2xl mt-1 flex gap-4 items-center">
+      <div className="flex justify-between">
+        <span className="font-semibold text-2xl mt-1 flex gap-2 items-center">
           {client.name}
           <Link to={uriAlbum("admin", client.link)}>
             <Button variant="ghost" className="px-3 py-0">
@@ -64,7 +64,7 @@ export default function ClientPage() {
         </div>
       </div>
 
-      <div className="flex gap-12 px-4 mb-8">
+      <div className="flex gap-12 px-4">
         <span>Access Code: {client.accessCode}</span>
         <span>Location: {client.location}</span>
         <span>Date: {formatDate(client.date)}</span>

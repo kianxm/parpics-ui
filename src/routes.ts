@@ -14,6 +14,8 @@ export const ROUTES = {
   USER_ALBUM: "/user/:username/:link",
   ABOUT: "/about",
   PRICING: "/pricing",
+  PROFILE: "/profile",
+  ANALYTICS: "/analytics",
 } as const;
 
 export interface Param {
