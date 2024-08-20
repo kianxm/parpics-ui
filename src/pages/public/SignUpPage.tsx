@@ -28,6 +28,7 @@ export default function SignUpPage() {
   }
 
   const { onChange, onSubmit, values } = useForm(registerUserCallback, {
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -60,6 +61,16 @@ export default function SignUpPage() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
+            <div className="grid gap-1">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                type="username"
+                name="username"
+                required
+                placeholder="kianmalakooti"
+                onChange={onChange}
+              />
+            </div>
             <div className="grid gap-1">
               <Label htmlFor="email">Email</Label>
               <Input
