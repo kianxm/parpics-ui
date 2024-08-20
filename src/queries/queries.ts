@@ -48,6 +48,55 @@ export const getClient = gql`
       createdAt
       updatedAt
       photoCount
+      photos {
+        name
+        createdAt
+        format
+        bytes
+        url
+        publicId
+        version
+        assetId
+      }
+    }
+  }
+`;
+
+export const getClientPhotos = gql`
+  query GetClientPhotos($clientId: ID!) {
+    getClientPhotos(clientId: $clientId) {
+      url
+      publicId
+      version
+      assetId
+    }
+  }
+`;
+
+export const getDashboardOverview = gql`
+  query GetDashboardOverview($userId: ID!) {
+    getDashboardOverview(userId: $userId) {
+      totalClients
+      totalPaidClients
+      totalPhotos
+    }
+  }
+`;
+
+export const getUserByUsername = gql`
+  query GetUserByUsername($username: String!) {
+    getUserByUsername(username: $username) {
+      email
+      username
+    }
+  }
+`;
+
+export const checkAccessCode = gql`
+  query CheckAccessCode($accessCode: Int!) {
+    checkAccessCode(accessCode: $accessCode) {
+      isValid
+      link
     }
   }
 `;
