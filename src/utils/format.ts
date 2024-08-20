@@ -39,3 +39,8 @@ export function bytesToMB(bytes: number) {
 export function convertToSlug(name: string) {
   return name.toLowerCase().replace(/ /g, "-");
 }
+
+export function capitalizeFirstLetter(name: string | undefined) {
+  if (!name) return "";
+  return name.charAt(0).toUpperCase() + name.slice(1);
+}
