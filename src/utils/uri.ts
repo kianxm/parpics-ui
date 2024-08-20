@@ -23,3 +23,7 @@ export function uriAbout() {
 export function uriPricing() {
   return generatePath(ROUTES.PRICING);
 }
+
+export function uriAlbum(username: string, link: number | string) {
+  return generatePath(ROUTES.USER_ALBUM, { params: { username, link } });
+}

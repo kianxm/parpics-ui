@@ -100,3 +100,31 @@ export const checkAccessCode = gql`
     }
   }
 `;
+
+export const getAlbumPage = gql`
+  query GetAlbumPage($link: String!) {
+    getAlbumPage(link: $link) {
+      id
+      name
+      link
+      accessCode
+      location
+      date
+      hasPaid
+      createdAt
+      updatedAt
+      photoCount
+      userId
+      photos {
+        name
+        createdAt
+        format
+        bytes
+        url
+        publicId
+        version
+        assetId
+      }
+    }
+  }
+`;

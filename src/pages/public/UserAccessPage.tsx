@@ -2,8 +2,7 @@ import { useLazyQuery, useQuery } from "@apollo/client";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { checkAccessCode, getUserByUsername } from "../../queries/queries";
 import { LOGO_SVG_PATH } from "../../utils/constants";
-import { ROUTES } from "../../routes";
-import { Label } from "@radix-ui/react-label";
+import { generatePath, ROUTES } from "../../routes";
 
 import {
   Card,
@@ -16,8 +15,9 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { capitalizeFirstLetter } from "../../utils/format";
 import { useState } from "react";
+import { uriAlbum } from "../../utils/uri";
 
-export default function UserWebsitePage() {
+export default function UserAccessPage() {
   const navigate = useNavigate();
 
   const { username } = useParams();
@@ -50,7 +50,7 @@ export default function UserWebsitePage() {
 
       if (isValid) {
         if (link) {
-          navigate(link);
+          navigate(uriAlbum(username, link));
         } else {
           setErrors("No link found");
         }

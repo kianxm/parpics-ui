@@ -88,7 +88,7 @@ export default function EditClientDialog({
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleOnSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
+            <DialogTitle>Edit Client</DialogTitle>
             <DialogDescription>
               Make changes to your client here
             </DialogDescription>

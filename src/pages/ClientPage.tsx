@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getClient } from "../queries/queries";
 import { Client } from "../types/client";
 import { formatDate } from "../utils/format";
@@ -11,6 +11,8 @@ import PhotoTable from "../components/client/PhotoTable";
 import { Button } from "../components/ui/button";
 import { DELETE_ALL_CLIENT_PHOTOS } from "../mutations/client";
 import EditClientDialog from "../components/client/EditClientDialog";
+import { uriAlbum } from "../utils/uri";
+import { IconLink } from "@tabler/icons-react";
 
 export default function ClientPage() {
   const { clientId } = useParams();
@@ -42,6 +44,11 @@ export default function ClientPage() {
       <div className="flex justify-between mx-4">
         <span className="font-semibold text-2xl mt-1 flex gap-4 items-center">
           {client.name}
+          <Link to={uriAlbum("admin", client.link)}>
+            <Button variant="ghost" className="px-3 py-0">
+              <IconLink size={16} />
+            </Button>
+          </Link>
           <Tag text={client.hasPaid ? CLIENT_PAID : CLIENT_UNPAID} />
         </span>
         <div className="flex gap-2">
@@ -58,12 +65,12 @@ export default function ClientPage() {
       </div>
 
       <div className="flex gap-12 px-4 mb-8">
-        <span>Link: {client.link}</span>
         <span>Access Code: {client.accessCode}</span>
         <span>Location: {client.location}</span>
         <span>Date: {formatDate(client.date)}</span>
         <span>Photo Count: {client.photoCount}</span>
       </div>
+
       {photos.length > 0 ? (
         <PhotoTable photos={photos as Photo[]} refetch={refetch} />
       ) : (

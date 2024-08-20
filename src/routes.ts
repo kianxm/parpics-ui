@@ -10,7 +10,8 @@ export const ROUTES = {
     CLIENT: "/dashboard/clients/:clientId",
     CREATE: "/dashboard/clients/new",
   },
-  USER_WEBSITE: "/user/:username",
+  USER_ACCESS: "/access/:username",
+  USER_ALBUM: "/user/:username/:link",
   ABOUT: "/about",
   PRICING: "/pricing",
 } as const;

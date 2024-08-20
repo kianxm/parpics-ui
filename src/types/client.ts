@@ -1,3 +1,5 @@
+import { Photo } from "./photo";
+
 export interface Client {
   id: string;
   userId: string;
@@ -10,6 +12,7 @@ export interface Client {
   photoCount: number | null;
   createdAt: string;
   updatedAt: string;
+  photo: Photo;
 }
 
 export interface DashboardOverview {

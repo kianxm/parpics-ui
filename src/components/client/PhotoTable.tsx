@@ -13,6 +13,7 @@ import { DELETE_PHOTO } from "../../mutations/client";
 import { useState } from "react";
 import { formatSize } from "../../utils/format";
 import { Link } from "react-router-dom";
+import Tag from "../ui/tag";
 
 interface PhotoTableProps {
   photos: Photo[];
@@ -45,24 +46,28 @@ export default function PhotoTable({ photos, refetch }: PhotoTableProps) {
         <TableRow className="hover:bg-transparent">
           <TableHead></TableHead>
           <TableHead>File</TableHead>
-          <TableHead>Size</TableHead>
           <TableHead>Link</TableHead>
+          <TableHead>Format</TableHead>
+          <TableHead>Size</TableHead>
         </TableRow>
       </TableHeader>
       <tbody>
         {photos?.map((photo, index) => (
           <TableRow key={index} className="cursor-pointer text-left">
             <TableCell className="whitespace-nowrap">
-              <img src={photo.url} width={70} />
+              <img src={photo.url} className="w-16 h-16 object-contain" />
             </TableCell>
             <TableCell className="whitespace-nowrap">{photo.name}</TableCell>
-            <TableCell className="whitespace-nowrap">
-              {formatSize(photo.bytes)}
-            </TableCell>
-            <TableCell className="whitespace-nowrap hover:text-blue-500">
+            <TableCell className="whitespace-nowrap hover:text-blue-500 max-w-md truncate">
               <Link to={photo.url} target="_blank">
                 {photo.url}
               </Link>
+            </TableCell>
+            <TableCell className="whitespace-nowrap">
+              <Tag text={photo.format} />
+            </TableCell>
+            <TableCell className="whitespace-nowrap">
+              {formatSize(photo.bytes)}
             </TableCell>
             <TableCell className="text-right w-0">
               <Button

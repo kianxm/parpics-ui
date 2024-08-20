@@ -3,16 +3,21 @@ import ClientTable from "../components/client/ClientTable";
 import { useMutation, useQuery } from "@apollo/client";
 import { getAllClientsByUserId } from "../queries/queries";
 import ClientGrid from "../components/client/ClientGrid";
-import GridListButton from "../components/client/GridListButton";
 import FilterButtons from "../components/client/FilterButtons";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../routes";
 import { Button } from "../components/ui/button";
-import { Plus } from "lucide-react";
+import { Grid, List, Plus } from "lucide-react";
 import { Client } from "../types/client";
 import { AuthContext } from "../context/context";
 import { CREATE_CLIENT } from "../mutations/client";
 import { mockClients } from "../utils/mock";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
 
 export default function ClientsPage() {
   const { user } = useContext(AuthContext);
@@ -67,18 +72,30 @@ export default function ClientsPage() {
           </Link>
         </div>
       </div>
-      <div className="flex w-full mt-1 justify-between px-4">
-        <FilterButtons />
-        <GridListButton className="px-2" onChange={handleViewChange} />
-      </div>
-      {isGrid ? (
-        <ClientGrid clients={data.getAllClientsByUserId as Client[]} />
-      ) : (
-        <ClientTable
-          clients={data.getAllClientsByUserId as Client[]}
-          refetch={refetch}
-        />
-      )}
+
+      <Tabs defaultValue="table" className="space-y-4">
+        <div className="flex justify-between mx-4 mt-1">
+          <FilterButtons />
+
+          <TabsList>
+            <TabsTrigger value="table">
+              <List size={20} />
+            </TabsTrigger>
+            <TabsTrigger value="grid">
+              <Grid size={20} />
+            </TabsTrigger>
+          </TabsList>
+        </div>
+        <TabsContent value="table">
+          <ClientTable
+            clients={data.getAllClientsByUserId as Client[]}
+            refetch={refetch}
+          />
+        </TabsContent>
+        <TabsContent value="grid">
+          <ClientGrid clients={data.getAllClientsByUserId as Client[]} />
+        </TabsContent>
+      </Tabs>
     </>
   );
 }

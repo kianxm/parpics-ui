@@ -3,10 +3,10 @@ import {
   IconArrowLeft,
   IconBrandTabler,
   IconSettings,
-  IconUserBolt,
+  IconUserCircle,
+  IconUsers,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
-import { PersonStanding } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { cn } from "../../lib/utils";
 import { ROUTES } from "../../routes";
@@ -25,8 +25,6 @@ export function NewSidebar({ children }: { children: React.ReactNode }) {
     navigate(ROUTES.SITE);
   };
 
-  console.log(user);
-
   const SidebarLinks = [
     {
       label: "Dashboard",
@@ -39,14 +37,14 @@ export function NewSidebar({ children }: { children: React.ReactNode }) {
       label: "Clients",
       href: ROUTES.CLIENTS.CLIENTS,
       icon: (
-        <PersonStanding className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconUsers className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
       label: "Profile",
       href: "#",
       icon: (
-        <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconUserCircle className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {

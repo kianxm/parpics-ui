@@ -24,9 +24,8 @@ const LoginPage = lazyHelp(() => import("./pages/public/LoginPage"));
 const Dashboard = lazyHelp(() => import("./pages/Dashboard"));
 const ClientsPage = lazyHelp(() => import("./pages/ClientsPage"));
 const ClientPage = lazyHelp(() => import("./pages/ClientPage"));
-const UserWebsitePage = lazyHelp(
-  () => import("./pages/public/UserWebsitePage")
-);
+const UserAccessPage = lazyHelp(() => import("./pages/public/UserAccessPage"));
+const ViewAlbumPage = lazyHelp(() => import("./pages/user/ViewAlbumPage"));
 
 export default function Root() {
   return (
@@ -45,7 +44,9 @@ export default function Root() {
           <Route path={ROUTES.LOGIN} element={<LoginPage />} />
           <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
 
-          <Route path={ROUTES.USER_WEBSITE} element={<UserWebsitePage />} />
+          <Route path={ROUTES.USER_ACCESS} element={<UserAccessPage />} />
+
+          <Route path={ROUTES.USER_ALBUM} element={<ViewAlbumPage />} />
 
           <Route
             path={ROUTES.DASHBOARD.DASHBOARD}
