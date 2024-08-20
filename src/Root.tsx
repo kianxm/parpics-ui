@@ -24,6 +24,9 @@ const LoginPage = lazyHelp(() => import("./pages/public/LoginPage"));
 const Dashboard = lazyHelp(() => import("./pages/Dashboard"));
 const ClientsPage = lazyHelp(() => import("./pages/ClientsPage"));
 const ClientPage = lazyHelp(() => import("./pages/ClientPage"));
+const UserWebsitePage = lazyHelp(
+  () => import("./pages/public/UserWebsitePage")
+);
 
 export default function Root() {
   return (
@@ -41,6 +44,8 @@ export default function Root() {
           <Route path={ROUTES.PRICING} element={<PricingPage />} />
           <Route path={ROUTES.LOGIN} element={<LoginPage />} />
           <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
+
+          <Route path={ROUTES.USER_WEBSITE} element={<UserWebsitePage />} />
 
           <Route
             path={ROUTES.DASHBOARD.DASHBOARD}
