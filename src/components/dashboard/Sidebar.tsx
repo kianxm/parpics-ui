@@ -18,12 +18,14 @@ import { AuthContext } from "../../context/context";
 export function NewSidebar({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   const onLogout = () => {
     logout();
     navigate(ROUTES.SITE);
   };
+
+  console.log(user);
 
   const SidebarLinks = [
     {
@@ -79,7 +81,7 @@ export function NewSidebar({ children }: { children: React.ReactNode }) {
             </Button>
             <SidebarLink
               link={{
-                label: "Username here",
+                label: user.email,
                 href: "#",
                 icon: (
                   <img
