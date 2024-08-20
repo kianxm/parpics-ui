@@ -1,5 +1,3 @@
-"use client";
-
 import { Client } from "../../types/client";
 import { LOGO_SVG_PATH } from "../../utils/constants";
 import {

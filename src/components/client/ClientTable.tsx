@@ -15,7 +15,10 @@ import { Client } from "../../types/client";
 import { uriClient } from "../../utils/uri";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { DELETE_CLIENT } from "../../mutations/client";
+import {
+  DELETE_ALL_CLIENT_PHOTOS,
+  DELETE_CLIENT,
+} from "../../mutations/client";
 
 interface ClientTableProps {
   clients: Client[];
@@ -24,11 +27,13 @@ interface ClientTableProps {
 
 export default function ClientTable({ clients, refetch }: ClientTableProps) {
   const navigate = useNavigate();
-  const [deleteClientMutation] = useMutation(DELETE_CLIENT);
+  const [deleteClient] = useMutation(DELETE_CLIENT);
+  const [deleteAllClientPhotos] = useMutation(DELETE_ALL_CLIENT_PHOTOS);
 
   const handleDelete = async (clientId: string) => {
     try {
-      await deleteClientMutation({ variables: { clientId } });
+      await deleteAllClientPhotos({ variables: { clientId } });
+      await deleteClient({ variables: { clientId } });
       refetch();
     } catch (error) {
       throw new Error("Failed to delete client");
@@ -45,8 +50,8 @@ export default function ClientTable({ clients, refetch }: ClientTableProps) {
           <TableHead>Access Code</TableHead>
           <TableHead>Location</TableHead>
           <TableHead>Date</TableHead>
-          <TableHead>Paid Status</TableHead>
-          <TableHead>Count</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Photos</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>

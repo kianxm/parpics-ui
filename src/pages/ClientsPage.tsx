@@ -13,12 +13,10 @@ import { Client } from "../types/client";
 import { AuthContext } from "../context/context";
 import { CREATE_CLIENT } from "../mutations/client";
 import { mockClients } from "../utils/mock";
-import { useToast } from "../components/ui/use-toast";
 
 export default function ClientsPage() {
   const { user } = useContext(AuthContext);
   const [createClient] = useMutation(CREATE_CLIENT);
-  const { toast } = useToast();
 
   const createMockClient = async () => {
     try {
@@ -31,10 +29,7 @@ export default function ClientsPage() {
           userId: user.user_id,
         },
       });
-      toast({
-        title: "Success!",
-        description: "Mock client created.",
-      });
+
       refetch();
     } catch (error) {
       console.error("Failed to create mock client", error);
