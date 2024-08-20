@@ -11,3 +11,9 @@ export interface Client {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface DashboardOverview {
+  totalClients: number;
+  totalPhotos: number;
+  totalPaidClients: number;
+}
