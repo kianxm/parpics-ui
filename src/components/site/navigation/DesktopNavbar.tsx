@@ -29,7 +29,9 @@ export default function DesktopNavbar() {
             <span className="font-medium">Dashboard</span>
           </Link>
         )}
-        <Button className="rounded-full bg-black">Join for free</Button>
+        <Link to={ROUTES.SIGN_UP}>
+          <Button className="rounded-full bg-black">Join for free</Button>
+        </Link>
       </aside>
     </div>
   );
