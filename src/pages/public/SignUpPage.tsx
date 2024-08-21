@@ -31,7 +31,6 @@ export default function SignUpPage() {
     username: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
@@ -48,7 +47,7 @@ export default function SignUpPage() {
 
   return (
     <section className="h-[calc(100vh-57px)] flex justify-center items-center flex-col gap-5">
-      <Link to={ROUTES.DASHBOARD.DASHBOARD} className="flex items-center gap-2">
+      <Link to={ROUTES.SITE} className="flex items-center gap-2">
         <img src={LOGO_SVG_PATH} alt="parpics logo" height={60} width={60} />
         <span className="text-3xl font-bold">Parpics.</span>
       </Link>
@@ -91,19 +90,13 @@ export default function SignUpPage() {
                 onChange={onChange}
               />
             </div>
-            <div className="grid gap-1">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input
-                type="password"
-                name="confirmPassword"
-                required
-                placeholder="********"
-                onChange={onChange}
-              />
-            </div>
 
             {errors.map(function (error, index) {
-              return <div key={index}>{error.message}</div>;
+              return (
+                <div key={index} className="text-sm text-red-500">
+                  {error.message}
+                </div>
+              );
             })}
 
             <Button className="w-full" onClick={onSubmit} disabled={loading}>

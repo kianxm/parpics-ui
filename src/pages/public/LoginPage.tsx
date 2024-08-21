@@ -46,7 +46,7 @@ export default function LoginPage() {
 
   return (
     <section className="h-[calc(100vh-57px)] flex justify-center items-center flex-col gap-5">
-      <Link to={ROUTES.DASHBOARD.DASHBOARD} className="flex items-center gap-2">
+      <Link to={ROUTES.SITE} className="flex items-center gap-2">
         <img src={LOGO_SVG_PATH} alt="parpics logo" height={60} width={60} />
         <span className="text-3xl font-bold">Parpics.</span>
       </Link>
