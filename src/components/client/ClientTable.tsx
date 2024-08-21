@@ -25,7 +25,6 @@ import {
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu";
 import { IconDotsVertical } from "@tabler/icons-react";
-import { useState } from "react";
 
 interface ClientTableProps {
   clients: Client[];
@@ -34,6 +33,7 @@ interface ClientTableProps {
 
 export default function ClientTable({ clients, refetch }: ClientTableProps) {
   const navigate = useNavigate();
+
   const [deleteClient] = useMutation(DELETE_CLIENT);
   const [deleteAllClientPhotos] = useMutation(DELETE_ALL_CLIENT_PHOTOS);
 

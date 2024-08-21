@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import ClientTable from "../components/client/ClientTable";
 import { useMutation, useQuery } from "@apollo/client";
 import { getAllClientsByUserId } from "../queries/queries";
@@ -36,11 +36,6 @@ export default function ClientsPage() {
   const { loading, error, data, refetch } = useQuery(getAllClientsByUserId, {
     variables: { userId: user.user_id },
   });
-
-  const [isGrid, setIsGrid] = useState(false);
-  const handleViewChange = (isGridView: boolean) => {
-    setIsGrid(isGridView);
-  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;

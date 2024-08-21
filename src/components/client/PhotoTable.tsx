@@ -55,7 +55,11 @@ export default function PhotoTable({ photos, refetch }: PhotoTableProps) {
         {photos?.map((photo, index) => (
           <TableRow key={index} className="cursor-pointer text-left">
             <TableCell className="whitespace-nowrap">
-              <img src={photo.url} className="w-16 h-16 object-contain" />
+              <img
+                src={photo.url}
+                alt={photo.name}
+                className="w-16 h-16 object-contain"
+              />
             </TableCell>
             <TableCell className="whitespace-nowrap">{photo.name}</TableCell>
             <TableCell className="whitespace-nowrap hover:text-blue-500 max-w-md truncate">
