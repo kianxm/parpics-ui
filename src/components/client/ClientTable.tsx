@@ -93,26 +93,23 @@ export default function ClientTable({ clients, refetch }: ClientTableProps) {
                 <DropdownMenuTrigger>
                   <IconDotsVertical size={18} />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent side="left" className="w-40">
-                  <DropdownMenuItem>
+                <DropdownMenuContent side="left" className="w-36">
+                  <DropdownMenuItem className="cursor-pointer">
                     <Edit2 className="mr-2 h-4 w-4" />
                     <span>Edit</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    className=""
+                    className="group cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       //TODO: Favorite photo here
                     }}
                   >
-                    <Heart className="mr-2 h-4 w-4" />
+                    <Heart className="mr-2 h-4 w-4 group-hover:text-red-500" />
                     <span>Favorite</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Plus className="mr-2 h-4 w-4" />
-                    <span>New Team</span>
-                  </DropdownMenuItem>
                   <DropdownMenuItem
+                    className="cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDelete(client.id);
