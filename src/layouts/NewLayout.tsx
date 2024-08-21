@@ -37,12 +37,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
+import { useContext } from "react";
+import { AuthContext } from "../context/context";
 
 const NewLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const pathSegments = location.pathname.split("/").filter(Boolean);
 
   const isActive = (path: string) => location.pathname === path;
+
+  const { logout } = useContext(AuthContext);
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -214,9 +218,15 @@ const NewLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Support
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={logout}>
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
