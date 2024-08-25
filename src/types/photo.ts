@@ -7,4 +7,5 @@ export interface Photo {
   publicId: string;
   version: number;
   assetId: string;
+  isFavorite: boolean;
 }
