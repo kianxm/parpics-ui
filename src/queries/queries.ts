@@ -57,6 +57,7 @@ export const getClient = gql`
         publicId
         version
         assetId
+        isFavorite
       }
     }
   }
@@ -124,6 +125,7 @@ export const getAlbumPage = gql`
         publicId
         version
         assetId
+        isFavorite
       }
     }
   }
