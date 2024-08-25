@@ -6,14 +6,20 @@ import {
   TableRow,
 } from "../ui/table";
 import { Photo } from "../../types/photo";
-import { Button } from "../ui/button";
-import { Trash } from "lucide-react";
+import { Edit2, Heart, Trash } from "lucide-react";
 import { useMutation } from "@apollo/client";
-import { DELETE_PHOTO } from "../../mutations/client";
+import { DELETE_PHOTO, TOGGLE_FAVORITE_PHOTO } from "../../mutations/client";
 import { useState } from "react";
 import { formatSize } from "../../utils/format";
 import { Link } from "react-router-dom";
 import Tag from "../ui/tag";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { IconDotsVertical } from "@tabler/icons-react";
 
 interface PhotoTableProps {
   photos: Photo[];
@@ -22,11 +28,9 @@ interface PhotoTableProps {
 
 export default function PhotoTable({ photos, refetch }: PhotoTableProps) {
   const [deletePhoto] = useMutation(DELETE_PHOTO);
-  const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [toggleFavoritePhoto] = useMutation(TOGGLE_FAVORITE_PHOTO);
 
   const handleDelete = async (publicId: string) => {
-    setLoadingId(publicId);
-
     try {
       const { data } = await deletePhoto({ variables: { publicId } });
 
@@ -35,8 +39,17 @@ export default function PhotoTable({ photos, refetch }: PhotoTableProps) {
       }
     } catch (error) {
       console.error("Error deleting photo:", error);
-    } finally {
-      setLoadingId(null);
+    }
+  };
+
+  const handleFavorite = async (publicId: string) => {
+    try {
+      const { data } = await toggleFavoritePhoto({ variables: { publicId } });
+      if (data.toggleFavoritePhoto) {
+        refetch();
+      }
+    } catch (error) {
+      console.error("Error favoriting photo:", error);
     }
   };
 
@@ -74,17 +87,38 @@ export default function PhotoTable({ photos, refetch }: PhotoTableProps) {
               {formatSize(photo.bytes)}
             </TableCell>
             <TableCell className="text-right w-0">
-              <Button
-                size={"icon"}
-                className="text-foreground bg-transparent hover:bg-red-500 hover:text-white"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete(photo.publicId);
-                }}
-                disabled={loadingId === photo.publicId}
-              >
-                <Trash size={16} />
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <IconDotsVertical size={18} />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side="left" className="w-36">
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Edit2 className="mr-2 h-4 w-4" />
+                    <span>Edit</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="group cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      //TODO: Favorite photo here
+                      handleFavorite(photo.publicId);
+                    }}
+                  >
+                    <Heart className="mr-2 h-4 w-4 group-hover:text-red-500" />
+                    <span>{photo.isFavorite ? "Unfavorite" : "Favorite"}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(photo.publicId);
+                    }}
+                  >
+                    <Trash className="mr-2 h-4 w-4" />
+                    <span>Delete</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </TableCell>
           </TableRow>
         ))}

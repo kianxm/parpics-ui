@@ -12,6 +12,7 @@ import { useMutation } from "@apollo/client";
 import { ADD_PHOTO_TO_CLIENT } from "../../mutations/client";
 import { useParams } from "react-router-dom";
 import { Input } from "../ui/input";
+import { Photo } from "../../types/photo";
 
 export default function PhotoUploader({ refetch }: { refetch: () => void }) {
   const [files, setFiles] = useState<File[]>([]);
@@ -54,7 +55,8 @@ export default function PhotoUploader({ refetch }: { refetch: () => void }) {
           publicId: results.public_id,
           version: results.version,
           assetId: results.asset_id,
-        };
+          isFavorite: false,
+        } as Photo;
       })
     );
 
