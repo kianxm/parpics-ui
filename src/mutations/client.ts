@@ -47,6 +47,7 @@ export const ADD_PHOTO_TO_CLIENT = gql`
         publicId
         version
         assetId
+        isFavorite
       }
     }
   }
@@ -61,5 +62,14 @@ export const DELETE_PHOTO = gql`
 export const DELETE_ALL_CLIENT_PHOTOS = gql`
   mutation DeleteAllClientPhotos($clientId: ID!) {
     deleteAllClientPhotos(clientId: $clientId)
+  }
+`;
+
+export const TOGGLE_FAVORITE_PHOTO = gql`
+  mutation ToggleFavoritePhoto($publicId: String!) {
+    toggleFavoritePhoto(publicId: $publicId) {
+      publicId
+      isFavorite
+    }
   }
 `;
