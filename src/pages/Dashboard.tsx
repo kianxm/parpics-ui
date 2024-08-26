@@ -1,12 +1,9 @@
 import { Button } from "../components/ui/button";
 // import { useQuery } from "@apollo/client";
 // import { getDashboardOverview } from "../queries/queries";
-// import { useContext } from "react";
-// import { AuthContext } from "../context/context";
 // import { DashboardOverview } from "../types/client";
 
 export default function DashboardPage() {
-  // const { user } = useContext(AuthContext);
   // const { loading, error, data } = useQuery(getDashboardOverview, {
   //   variables: { userId: user.user_id },
   // });
