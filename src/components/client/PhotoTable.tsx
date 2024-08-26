@@ -19,7 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { IconDotsVertical } from "@tabler/icons-react";
+import { IconDotsVertical, IconHeartFilled } from "@tabler/icons-react";
 
 interface PhotoTableProps {
   photos: Photo[];
@@ -28,7 +28,6 @@ interface PhotoTableProps {
 
 export default function PhotoTable({ photos, refetch }: PhotoTableProps) {
   const [deletePhoto] = useMutation(DELETE_PHOTO);
-  const [toggleFavoritePhoto] = useMutation(TOGGLE_FAVORITE_PHOTO);
 
   const handleDelete = async (publicId: string) => {
     try {
@@ -42,23 +41,12 @@ export default function PhotoTable({ photos, refetch }: PhotoTableProps) {
     }
   };
 
-  const handleFavorite = async (publicId: string) => {
-    try {
-      const { data } = await toggleFavoritePhoto({ variables: { publicId } });
-      if (data.toggleFavoritePhoto) {
-        refetch();
-      }
-    } catch (error) {
-      console.error("Error favoriting photo:", error);
-    }
-  };
-
   return (
     <Table className="w-full">
       <TableHeader className="whitespace-nowrap">
         <TableRow className="hover:bg-transparent">
           <TableHead></TableHead>
-          <TableHead>File</TableHead>
+          <TableHead>Name</TableHead>
           <TableHead>Link</TableHead>
           <TableHead>Format</TableHead>
           <TableHead>Size</TableHead>
@@ -67,7 +55,7 @@ export default function PhotoTable({ photos, refetch }: PhotoTableProps) {
       <tbody>
         {photos?.map((photo, index) => (
           <TableRow key={index} className="cursor-pointer text-left">
-            <TableCell className="whitespace-nowrap">
+            <TableCell className="whitespace-nowrap py-0 max-w-16">
               <img
                 src={photo.url}
                 alt={photo.name}
@@ -86,10 +74,17 @@ export default function PhotoTable({ photos, refetch }: PhotoTableProps) {
             <TableCell className="whitespace-nowrap">
               {formatSize(photo.bytes)}
             </TableCell>
-            <TableCell className="text-right w-0">
+            <TableCell className="whitespace-nowrap">
+              {!photo.isFavorite ? (
+                <Heart className="h-4 w-4" />
+              ) : (
+                <IconHeartFilled className="h-4 w-4 text-red-500" />
+              )}
+            </TableCell>
+            <TableCell className="w-0">
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <IconDotsVertical size={18} />
+                  <IconDotsVertical className="h-4 w-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="left" className="w-36">
                   <DropdownMenuItem className="cursor-pointer">
@@ -101,10 +96,13 @@ export default function PhotoTable({ photos, refetch }: PhotoTableProps) {
                     onClick={(e) => {
                       e.stopPropagation();
                       //TODO: Favorite photo here
-                      handleFavorite(photo.publicId);
                     }}
                   >
-                    <Heart className="mr-2 h-4 w-4 group-hover:text-red-500" />
+                    {!photo.isFavorite ? (
+                      <Heart className="mr-2 h-4 w-4" />
+                    ) : (
+                      <IconHeartFilled className="mr-2 h-4 w-4 text-red-500" />
+                    )}
                     <span>{photo.isFavorite ? "Unfavorite" : "Favorite"}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
