@@ -55,7 +55,7 @@ export default function PhotoTable({ photos, refetch }: PhotoTableProps) {
       <tbody>
         {photos?.map((photo, index) => (
           <TableRow key={index} className="cursor-pointer text-left">
-            <TableCell className="whitespace-nowrap py-0 max-w-16">
+            <TableCell className="whitespace-nowrap py-1 max-w-16">
               <img
                 src={photo.url}
                 alt={photo.name}

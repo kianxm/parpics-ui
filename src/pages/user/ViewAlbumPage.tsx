@@ -15,7 +15,6 @@ import ViewerSignUpDialog from "../../components/viewer/ViewerSignUpDialog";
 import { TOGGLE_FAVORITE_PHOTO } from "../../mutations/client";
 import { IconCreditCardPay, IconHeartFilled } from "@tabler/icons-react";
 import { ImageModal } from "../../components/viewer/ImageModal";
-import { Comment } from "../../types/comment";
 
 const AlbumHeader = ({
   client,
@@ -90,8 +89,13 @@ const GridItem = ({
   const Content = () => (
     <div
       className="relative mb-4 break-inside-avoid"
-      onClick={() => {
-        openModal(index);
+      onClick={(e) => {
+        e.stopPropagation();
+        if (!viewer) {
+          openSignInDialog();
+        } else {
+          openModal(index);
+        }
       }}
     >
       <img
@@ -122,6 +126,14 @@ const GridItem = ({
           <Button
             className="px-3 py-1 bg-transparent text-white rounded"
             variant="custom"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!viewer) {
+                openSignInDialog();
+              } else {
+                openModal(index);
+              }
+            }}
           >
             <MessageSquareIcon size={24} />
           </Button>
@@ -211,6 +223,7 @@ export default function ViewAlbumPage() {
 
   const { data: userData } = useQuery(getUserById, {
     variables: { userId: user?.user_id },
+    skip: !user,
   });
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -300,6 +313,8 @@ export default function ViewAlbumPage() {
         onClose={() => setIsModalOpen(false)}
         client={client}
         viewer={currentUser}
+        downloadImage={downloadImage}
+        handleToggleFavoritePhoto={handleToggleFavoritePhoto}
         refetch={refetch}
       />
     </div>

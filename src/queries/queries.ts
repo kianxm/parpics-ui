@@ -140,6 +140,7 @@ export const getAlbumPage = gql`
         assetId
         isFavorite
         comments {
+          id
           author
           text
           createdAt

@@ -19,9 +19,9 @@
 - [ ] add multiple delete images
 - [x] watermark unpaid albums
 - [ ] replace client pathname with subdomain
-- [ ]
-- [ ]
-- [ ]
+- [ ] add name to user
+- [ ] create viewer account when viewer wants to comment/like on album
+- [ ] fix login/signup name values on view album
 - [ ]
 - [ ]
 - [ ]

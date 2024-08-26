@@ -10,15 +10,12 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import {
-  LOGIN_USER,
-  REGISTER_USER,
-  REGISTER_VIEWER,
-} from "../../mutations/user";
+import { LOGIN_USER, REGISTER_VIEWER } from "../../mutations/user";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/context";
 import { GraphQLFormattedError } from "graphql";
 import { useForm } from "../../utils/hooks";
+import { useNavigate } from "react-router-dom";
 
 interface ViewerSignUpDialog {
   isOpen: boolean;
@@ -31,6 +28,7 @@ export default function ViewerSignUpDialog({
 }: ViewerSignUpDialog) {
   const context = useContext(AuthContext);
   const [isSignIn, setIsSignIn] = useState(false);
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState<readonly GraphQLFormattedError[]>([]);
 
@@ -60,6 +58,7 @@ export default function ViewerSignUpDialog({
         const { registerViewer: userData } = data;
         context.login(userData);
         onOpenChange(false);
+        navigate(0);
       },
       onError: ({ graphQLErrors }) => {
         setErrors(graphQLErrors);
@@ -73,6 +72,7 @@ export default function ViewerSignUpDialog({
       const { loginUser: userData } = data;
       context.login(userData);
       onOpenChange(false);
+      navigate(0);
     },
     onError: ({ graphQLErrors }) => {
       setErrors(graphQLErrors);

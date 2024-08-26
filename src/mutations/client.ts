@@ -94,8 +94,17 @@ export const ADD_COMMENT_TO_PHOTO = gql`
       comments {
         author
         text
-        createdAt
       }
     }
+  }
+`;
+
+export const DELETE_COMMENT = gql`
+  mutation DeleteComment($clientId: ID!, $publicId: String!, $commentId: ID!) {
+    deleteComment(
+      clientId: $clientId
+      publicId: $publicId
+      commentId: $commentId
+    )
   }
 `;
