@@ -64,7 +64,7 @@ export default function ClientPage() {
         </div>
       </div>
 
-      <div className="flex gap-12 px-4">
+      <div className="flex gap-12 mb-4">
         <span>Access Code: {client.accessCode}</span>
         <span>Location: {client.location}</span>
         <span>Date: {formatDate(client.date)}</span>
@@ -74,10 +74,11 @@ export default function ClientPage() {
       {photos.length > 0 ? (
         <PhotoTable photos={photos as Photo[]} refetch={refetch} />
       ) : (
-        <div className="mx-auto font-semibold justify-center">
+        <div className="flex items-center justify-center h-full w-full text-center mt-16">
           No client photos
         </div>
       )}
+
       {deleteError && (
         <div className="text-red-500 mt-4">
           Error deleting photos: {deleteError.message}
