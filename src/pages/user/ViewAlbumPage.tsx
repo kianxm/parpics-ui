@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { Photo } from "../../types/photo";
 import { Button } from "../../components/ui/button";
@@ -12,23 +12,20 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/context";
 import { Viewer } from "../../types/user";
 import ViewerSignUpDialog from "../../components/viewer/ViewerSignUpDialog";
-
-function toggleFavoritePhoto(viewer: Viewer, photoId: string) {
-  if (!viewer) {
-    console.error("No viewer logged in");
-  }
-  console.log(photoId);
-}
+import { TOGGLE_FAVORITE_PHOTO } from "../../mutations/client";
+import { IconHeartFilled } from "@tabler/icons-react";
 
 const AlbumHeader = ({
   title,
   photoUrls,
   viewer,
+  clientId,
   logout,
 }: {
   title: string;
   photoUrls: string[];
-  viewer;
+  viewer: Viewer | null;
+  clientId: string;
   logout: () => void;
 }) => {
   return (
@@ -67,11 +64,15 @@ const GridItem = ({
   showWatermark,
   viewer,
   openSignInDialog,
+  clientId,
+  handleToggleFavoritePhoto,
 }: {
   photo: Photo;
   showWatermark: boolean;
   viewer: Viewer | null;
   openSignInDialog: () => void;
+  clientId: string;
+  handleToggleFavoritePhoto: (clientId: string, publicId: string) => void;
 }) => {
   const Content = () => (
     <div className="relative mb-4 break-inside-avoid">
@@ -89,11 +90,15 @@ const GridItem = ({
               if (!viewer) {
                 openSignInDialog();
               } else {
-                toggleFavoritePhoto(viewer, photo.publicId);
+                handleToggleFavoritePhoto(clientId, photo.publicId);
               }
             }}
           >
-            <Heart size={24} />
+            {!photo.isFavorite ? (
+              <Heart size={24} />
+            ) : (
+              <IconHeartFilled size={24} className="text-red-500" />
+            )}
           </Button>
           <Button
             className="px-3 py-1 bg-transparent text-white rounded"
@@ -127,11 +132,15 @@ const MasonryGrid = ({
   showWatermark,
   viewer,
   openSignInDialog,
+  clientId,
+  handleToggleFavoritePhoto,
 }: {
   images: Photo[];
   showWatermark: boolean;
   viewer: Viewer | null;
   openSignInDialog: () => void;
+  clientId: string;
+  handleToggleFavoritePhoto: (clientId: string, publicId: string) => void;
 }) => {
   return (
     <div className="columns-1 sm:columns-2 lg:columns-3 px-36 gap-4 pb-12">
@@ -141,7 +150,9 @@ const MasonryGrid = ({
           photo={photo}
           showWatermark={showWatermark}
           viewer={viewer}
+          clientId={clientId}
           openSignInDialog={openSignInDialog}
+          handleToggleFavoritePhoto={handleToggleFavoritePhoto}
         />
       ))}
     </div>
@@ -180,9 +191,30 @@ export default function ViewAlbumPage() {
 
   const { link } = useParams();
 
-  const { loading, error, data } = useQuery(getAlbumPage, {
+  const { loading, error, data, refetch } = useQuery(getAlbumPage, {
     variables: { link },
   });
+
+  const clientId = data?.getAlbumPage.id;
+
+  const [toggleFavoritePhoto] = useMutation(TOGGLE_FAVORITE_PHOTO);
+
+  const handleToggleFavoritePhoto = async (
+    clientId: string,
+    publicId: string
+  ) => {
+    try {
+      const { data } = await toggleFavoritePhoto({
+        variables: { clientId, publicId },
+      });
+
+      if (data.toggleFavoritePhoto) {
+        refetch();
+      }
+    } catch (error) {
+      console.error("Error deleting photo:", error);
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -201,6 +233,7 @@ export default function ViewAlbumPage() {
         title={client.name}
         photoUrls={photoUrls}
         viewer={user}
+        clientId={clientId}
         logout={logout}
       />
 
@@ -216,7 +249,9 @@ export default function ViewAlbumPage() {
         images={photos}
         showWatermark={!client.hasPaid}
         viewer={user}
+        clientId={clientId}
         openSignInDialog={openSignInDialog}
+        handleToggleFavoritePhoto={handleToggleFavoritePhoto}
       />
 
       <ViewerSignUpDialog

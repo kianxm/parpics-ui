@@ -66,10 +66,7 @@ export const DELETE_ALL_CLIENT_PHOTOS = gql`
 `;
 
 export const TOGGLE_FAVORITE_PHOTO = gql`
-  mutation ToggleFavoritePhoto($publicId: String!) {
-    toggleFavoritePhoto(publicId: $publicId) {
-      publicId
-      isFavorite
-    }
+  mutation ToggleFavoritePhoto($clientId: ID!, $publicId: String!) {
+    toggleFavoritePhoto(clientId: $clientId, publicId: $publicId)
   }
 `;
