@@ -4,6 +4,8 @@ export const ROUTES = {
   SIGN_UP: "/signup",
   DASHBOARD: {
     DASHBOARD: "/dashboard",
+    ANALYTICS: "/dashboard/analytics",
+    NOTIFICATIONS: "/dashboard/notifications",
   },
   CLIENTS: {
     CLIENTS: "/dashboard/clients",
@@ -15,7 +17,6 @@ export const ROUTES = {
   ABOUT: "/about",
   PRICING: "/pricing",
   PROFILE: "/profile",
-  ANALYTICS: "/analytics",
 } as const;
 
 export interface Param {
