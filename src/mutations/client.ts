@@ -70,3 +70,32 @@ export const TOGGLE_FAVORITE_PHOTO = gql`
     toggleFavoritePhoto(clientId: $clientId, publicId: $publicId)
   }
 `;
+
+export const ADD_COMMENT_TO_PHOTO = gql`
+  mutation AddCommentToPhoto(
+    $clientId: ID!
+    $publicId: String!
+    $commentInput: CommentInput!
+  ) {
+    addCommentToPhoto(
+      clientId: $clientId
+      publicId: $publicId
+      commentInput: $commentInput
+    ) {
+      name
+      createdAt
+      format
+      bytes
+      url
+      publicId
+      version
+      assetId
+      isFavorite
+      comments {
+        author
+        text
+        createdAt
+      }
+    }
+  }
+`;

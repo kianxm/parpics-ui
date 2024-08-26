@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Photo } from "../../types/photo";
 import { Button } from "../../components/ui/button";
 import { Download, Heart, LogOut, MessageSquareIcon } from "lucide-react";
-import { getAlbumPage } from "../../queries/queries";
+import { getAlbumPage, getUserById } from "../../queries/queries";
 import { Client } from "../../types/client";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -13,25 +13,47 @@ import { AuthContext } from "../../context/context";
 import { Viewer } from "../../types/user";
 import ViewerSignUpDialog from "../../components/viewer/ViewerSignUpDialog";
 import { TOGGLE_FAVORITE_PHOTO } from "../../mutations/client";
-import { IconHeartFilled } from "@tabler/icons-react";
+import { IconCreditCardPay, IconHeartFilled } from "@tabler/icons-react";
+import { ImageModal } from "../../components/viewer/ImageModal";
+import { Comment } from "../../types/comment";
 
 const AlbumHeader = ({
-  title,
+  client,
   photoUrls,
   viewer,
   clientId,
   logout,
 }: {
-  title: string;
+  client: Client;
   photoUrls: string[];
   viewer: Viewer | null;
   clientId: string;
   logout: () => void;
 }) => {
   return (
-    <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-8 py-5 text-gray-800 z-10 bg-white">
-      <h1 className="text-2xl font-semibold">{title}</h1>
+    <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-8 py-5 text-gray-800 z-10 bg-white shadow-sm">
+      <h1 className="text-2xl font-semibold">{client.name}</h1>
       <div className="flex gap-2">
+        {client.hasPaid && (
+          <Button
+            className="px-3 py-1 bg-transparent rounded"
+            variant="custom"
+            onClick={() => alert("Upgrade to premium")}
+          >
+            <IconCreditCardPay size={16} />
+          </Button>
+        )}
+        <Button className="px-3 py-1 bg-transparent rounded" variant="custom">
+          <MessageSquareIcon size={16} />
+        </Button>
+        <Button
+          className="px-3 py-1 bg-transparent text-gray-800 rounded"
+          variant="custom"
+          onClick={() => downloadAllImages(photoUrls)}
+          disabled={!client.hasPaid}
+        >
+          <Download size={16} />
+        </Button>
         {viewer && (
           <Button
             className="px-3 py-1 bg-transparent rounded"
@@ -41,19 +63,6 @@ const AlbumHeader = ({
             <LogOut size={16} />
           </Button>
         )}
-        <Button className="px-3 py-1 bg-transparent rounded" variant="custom">
-          <Heart size={16} />
-        </Button>
-        <Button className="px-3 py-1 bg-transparent rounded" variant="custom">
-          <MessageSquareIcon size={16} />
-        </Button>
-        <Button
-          className="px-3 py-1 bg-transparent text-gray-800 rounded"
-          variant="custom"
-          onClick={() => downloadAllImages(photoUrls)}
-        >
-          <Download size={16} />
-        </Button>
       </div>
     </div>
   );
@@ -66,6 +75,8 @@ const GridItem = ({
   openSignInDialog,
   clientId,
   handleToggleFavoritePhoto,
+  index,
+  openModal,
 }: {
   photo: Photo;
   showWatermark: boolean;
@@ -73,9 +84,16 @@ const GridItem = ({
   openSignInDialog: () => void;
   clientId: string;
   handleToggleFavoritePhoto: (clientId: string, publicId: string) => void;
+  index: number;
+  openModal: (index: number) => void;
 }) => {
   const Content = () => (
-    <div className="relative mb-4 break-inside-avoid">
+    <div
+      className="relative mb-4 break-inside-avoid"
+      onClick={() => {
+        openModal(index);
+      }}
+    >
       <img
         src={photo.url}
         className="w-full object-cover rounded-lg"
@@ -86,7 +104,8 @@ const GridItem = ({
           <Button
             className="px-3 py-1 bg-transparent text-white rounded"
             variant="custom"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               if (!viewer) {
                 openSignInDialog();
               } else {
@@ -134,6 +153,7 @@ const MasonryGrid = ({
   openSignInDialog,
   clientId,
   handleToggleFavoritePhoto,
+  openModal,
 }: {
   images: Photo[];
   showWatermark: boolean;
@@ -141,10 +161,11 @@ const MasonryGrid = ({
   openSignInDialog: () => void;
   clientId: string;
   handleToggleFavoritePhoto: (clientId: string, publicId: string) => void;
+  openModal: (index: number) => void;
 }) => {
   return (
-    <div className="columns-1 sm:columns-2 lg:columns-3 px-36 gap-4 pb-12">
-      {images.map((photo: Photo) => (
+    <div className="columns-1 sm:columns-2 lg:columns-3 px-12 md:px-24 lg:px-36 gap-4 pb-12">
+      {images.map((photo: Photo, index: number) => (
         <GridItem
           key={photo.publicId}
           photo={photo}
@@ -153,6 +174,8 @@ const MasonryGrid = ({
           clientId={clientId}
           openSignInDialog={openSignInDialog}
           handleToggleFavoritePhoto={handleToggleFavoritePhoto}
+          index={index}
+          openModal={openModal}
         />
       ))}
     </div>
@@ -186,8 +209,20 @@ const downloadAllImages = async (urls: string[]) => {
 export default function ViewAlbumPage() {
   const { user, logout } = useContext(AuthContext);
 
+  const { data: userData } = useQuery(getUserById, {
+    variables: { userId: user?.user_id },
+  });
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const openSignInDialog = () => setIsDialogOpen(true);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalIndex, setModalIndex] = useState(0);
+
+  const openModal = (index: number) => {
+    setModalIndex(index);
+    setIsModalOpen(true);
+  };
 
   const { link } = useParams();
 
@@ -204,13 +239,10 @@ export default function ViewAlbumPage() {
     publicId: string
   ) => {
     try {
-      const { data } = await toggleFavoritePhoto({
+      await toggleFavoritePhoto({
         variables: { clientId, publicId },
+        onCompleted: () => refetch(),
       });
-
-      if (data.toggleFavoritePhoto) {
-        refetch();
-      }
     } catch (error) {
       console.error("Error deleting photo:", error);
     }
@@ -219,6 +251,7 @@ export default function ViewAlbumPage() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  const currentUser = userData?.getUserById as Viewer;
   const client = data?.getAlbumPage as Client;
   const photos = data?.getAlbumPage.photos;
   const mainPhoto = data?.getAlbumPage.photos[0];
@@ -230,7 +263,7 @@ export default function ViewAlbumPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <AlbumHeader
-        title={client.name}
+        client={client}
         photoUrls={photoUrls}
         viewer={user}
         clientId={clientId}
@@ -252,11 +285,22 @@ export default function ViewAlbumPage() {
         clientId={clientId}
         openSignInDialog={openSignInDialog}
         handleToggleFavoritePhoto={handleToggleFavoritePhoto}
+        openModal={openModal}
       />
 
       <ViewerSignUpDialog
         isOpen={isDialogOpen}
         onOpenChange={setIsDialogOpen}
+      />
+
+      <ImageModal
+        images={photos}
+        initialIndex={modalIndex}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        client={client}
+        viewer={currentUser}
+        refetch={refetch}
       />
     </div>
   );

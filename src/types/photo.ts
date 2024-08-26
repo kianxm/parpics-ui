@@ -1,3 +1,5 @@
+import { Comment } from "./comment";
+
 export interface Photo {
   name: string;
   createdAt: string;
@@ -8,4 +10,5 @@ export interface Photo {
   version: number;
   assetId: string;
   isFavorite: boolean;
+  comments: Comment[];
 }

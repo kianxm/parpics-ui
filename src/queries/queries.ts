@@ -1,5 +1,17 @@
 import { gql } from "@apollo/client";
 
+export const getUserById = gql`
+  query Query($userId: ID!) {
+    getUserById(userId: $userId) {
+      name
+      username
+      email
+      password
+      token
+    }
+  }
+`;
+
 export const getAllClients = gql`
   query GetAllClients {
     getAllClients {
@@ -127,6 +139,11 @@ export const getAlbumPage = gql`
         version
         assetId
         isFavorite
+        comments {
+          author
+          text
+          createdAt
+        }
       }
     }
   }
