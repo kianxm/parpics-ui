@@ -32,6 +32,7 @@ export default function EditClientDialog({
   const [accessCode, setAccessCode] = useState<number>(client.accessCode);
   const [location, setLocation] = useState<string>(client.location);
   const [date, setDate] = useState<string>(client.date);
+  const [hasPaid, setHasPaid] = useState<boolean>(client.hasPaid);
 
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,6 +50,7 @@ export default function EditClientDialog({
             accessCode: accessCode.toString(),
             location,
             date,
+            hasPaid,
           },
         },
       });
@@ -165,6 +167,15 @@ export default function EditClientDialog({
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 className="col-span-5"
+              />
+            </div>
+            <div className="grid grid-cols-6 items-center gap-4">
+              <Label htmlFor="hasPaid">Paid?</Label>
+              <input
+                type="checkbox"
+                name="hasPaid"
+                defaultChecked={hasPaid}
+                onChange={(e) => setHasPaid(e.target.checked)}
               />
             </div>
           </div>

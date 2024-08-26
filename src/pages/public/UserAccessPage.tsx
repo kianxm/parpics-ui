@@ -2,7 +2,7 @@ import { useLazyQuery, useQuery } from "@apollo/client";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { checkAccessCode, getUserByUsername } from "../../queries/queries";
 import { LOGO_SVG_PATH } from "../../utils/constants";
-import { generatePath, ROUTES } from "../../routes";
+import { ROUTES } from "../../routes";
 
 import {
   Card,
@@ -22,7 +22,7 @@ export default function UserAccessPage() {
 
   const { username } = useParams();
   const {
-    data,
+    data: userData,
     loading: userLoading,
     error,
   } = useQuery(getUserByUsername, {
@@ -76,7 +76,7 @@ export default function UserAccessPage() {
           <CardTitle className="text-2xl">Access Code</CardTitle>
           <CardDescription>
             Enter the code given to you by&nbsp;
-            {capitalizeFirstLetter(data?.getUserByUsername?.username)}
+            {capitalizeFirstLetter(userData?.getUserByUsername?.username)}
           </CardDescription>
         </CardHeader>
         <CardContent>
