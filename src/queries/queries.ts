@@ -87,6 +87,7 @@ export const getDashboardOverview = gql`
 export const getUserByUsername = gql`
   query GetUserByUsername($username: String!) {
     getUserByUsername(username: $username) {
+      name
       email
       username
     }
