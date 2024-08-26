@@ -1,172 +1,119 @@
-import React, { useContext, useState } from "react";
-import {
-  IconArrowLeft,
-  IconBrandTabler,
-  IconSettings,
-  IconUserCircle,
-  IconUsers,
-} from "@tabler/icons-react";
-import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
-import { cn } from "../../lib/utils";
+import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../../routes";
-import { Button } from "../ui/button";
-import { SidebarBody, SidebarLink, SidebarProvider } from "../ui/sidebar";
-import { LOGO_ALT, LOGO_SVG_PATH } from "../../utils/constants";
-import { AuthContext } from "../../context/context";
+import {
+  BellIcon,
+  CameraIcon,
+  ChartAreaIcon,
+  Home,
+  Settings,
+  UsersIcon,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
-export function NewSidebar({ children }: { children: React.ReactNode }) {
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const { user, logout } = useContext(AuthContext);
-
-  const onLogout = () => {
-    logout();
-    navigate(ROUTES.SITE);
-  };
-
-  const SidebarLinks = [
-    {
-      label: "Dashboard",
-      href: ROUTES.DASHBOARD.DASHBOARD,
-      icon: (
-        <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Clients",
-      href: ROUTES.CLIENTS.CLIENTS,
-      icon: (
-        <IconUsers className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Profile",
-      href: "#",
-      icon: (
-        <IconUserCircle className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Settings",
-      href: "#",
-      icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-  ];
+const Sidebar = () => {
+  const location = useLocation();
+  const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div
-      className={cn(
-        "flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 mx-auto overflow-hidden",
-        "h-screen"
-      )}
-    >
-      <SidebarProvider open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-10">
-          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-            {open ? <Logo /> : <LogoIcon />}
-            <div className="mt-8 flex flex-col gap-2">
-              {SidebarLinks.map((link, idx) => (
-                <SidebarLink key={idx} link={link} />
-              ))}
-            </div>
-          </div>
-          <div>
-            <Button variant="custom" className="mx-0 px-0" onClick={onLogout}>
-              <IconArrowLeft className="h-5 w-5 text-black" />
-            </Button>
-            <SidebarLink
-              link={{
-                label: user.email,
-                href: "#",
-                icon: (
-                  <img
-                    src={LOGO_SVG_PATH}
-                    className="h-7 w-7 flex-shrink-0 rounded-full"
-                    width={50}
-                    height={50}
-                    alt={LOGO_ALT}
-                  />
-                ),
-              }}
-            />
-          </div>
-        </SidebarBody>
-      </SidebarProvider>
-      <div className="flex flex-1">
-        <div className="p-2 md:p-10 rounded-tl-2xl rounded-bl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export const Logo = () => {
-  return (
-    <Link
-      to={ROUTES.SITE}
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-    >
-      <img
-        src={LOGO_SVG_PATH}
-        className="h-7 w-7"
-        width={50}
-        height={50}
-        alt="Avatar"
-      />
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium text-black dark:text-white whitespace-pre"
-      >
-        Parpics
-      </motion.span>
-    </Link>
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
+      <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+        <Link
+          to={ROUTES.SITE}
+          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+        >
+          <CameraIcon className="h-4 w-4 transition-all group-hover:scale-110" />
+          <span className="sr-only">Parpics</span>
+        </Link>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to={ROUTES.DASHBOARD.DASHBOARD}
+                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                  isActive(ROUTES.DASHBOARD.DASHBOARD)
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                } transition-colors md:h-8 md:w-8`}
+              >
+                <Home className="h-5 w-5" />
+                <span className="sr-only">Dashboard</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Dashboard</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to={ROUTES.CLIENTS.CLIENTS}
+                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                  isActive(ROUTES.CLIENTS.CLIENTS)
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                } transition-colors md:h-8 md:w-8`}
+              >
+                <UsersIcon className="h-5 w-5" />
+                <span className="sr-only">Clients</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Clients</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to={ROUTES.DASHBOARD.ANALYTICS}
+                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                  isActive(ROUTES.DASHBOARD.ANALYTICS)
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                } transition-colors md:h-8 md:w-8`}
+              >
+                <ChartAreaIcon className="h-5 w-5" />
+                <span className="sr-only">Analytics</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Analytics</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to={ROUTES.DASHBOARD.NOTIFICATIONS}
+                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                  isActive(ROUTES.DASHBOARD.NOTIFICATIONS)
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                } transition-colors md:h-8 md:w-8`}
+              >
+                <BellIcon className="h-5 w-5" />
+                <span className="sr-only">Notifications</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Notifications</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </nav>
+      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                to="#"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+              >
+                <Settings className="h-5 w-5" />
+                <span className="sr-only">Settings</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Settings</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </nav>
+    </aside>
   );
 };
 
-export const LogoIcon = () => {
-  return (
-    <Link
-      to={ROUTES.SITE}
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-    >
-      <img
-        src={LOGO_SVG_PATH}
-        className="h-7 w-7"
-        width={50}
-        height={50}
-        alt={LOGO_ALT}
-      />
-    </Link>
-  );
-};
-
-// Dummy dashboard component with content
-export const SkeletonLoading = () => {
-  return (
-    <div className="flex flex-1">
-      <div className="p-2 md:p-10 rounded-tl-2xl rounded-bl-2xl bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
-        <div className="flex gap-2">
-          {[...new Array(4)].map((_, i) => (
-            <div
-              key={"first-array" + i}
-              className="h-20 w-full rounded-lg bg-gray-100 dark:bg-neutral-800 animate-pulse"
-            ></div>
-          ))}
-        </div>
-        <div className="flex gap-2 flex-1">
-          {[...new Array(2)].map((_, i) => (
-            <div
-              key={"second-array" + i}
-              className="h-full w-full rounded-lg bg-gray-100 dark:bg-neutral-800 animate-pulse"
-            ></div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
+export default Sidebar;

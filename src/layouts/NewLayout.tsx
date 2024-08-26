@@ -1,21 +1,13 @@
 import {
+  BellIcon,
   Camera,
-  CameraIcon,
-  ChartAreaIcon,
   Home,
   PanelLeft,
   Search,
-  Settings,
   SettingsIcon,
   UsersIcon,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../components/ui/tooltip";
 import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
 import {
   Breadcrumb,
@@ -38,6 +30,7 @@ import {
 } from "../components/ui/dropdown-menu";
 import { useContext } from "react";
 import { AuthContext } from "../context/context";
+import Sidebar from "../components/dashboard/Sidebar";
 
 const Header = () => {
   const location = useLocation();
@@ -75,6 +68,20 @@ const Header = () => {
             >
               <UsersIcon className="h-5 w-5" />
               Clients
+            </Link>
+            <Link
+              to={ROUTES.DASHBOARD.ANALYTICS}
+              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+            >
+              <SettingsIcon className="h-5 w-5" />
+              Analytics
+            </Link>
+            <Link
+              to={ROUTES.DASHBOARD.NOTIFICATIONS}
+              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+            >
+              <BellIcon className="h-5 w-5" />
+              Notifications
             </Link>
             <Link
               to="#"
@@ -147,91 +154,6 @@ const Header = () => {
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
-  );
-};
-
-const Sidebar = () => {
-  const location = useLocation();
-
-  const isActive = (path: string) => location.pathname === path;
-  return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-      <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-        <Link
-          to={ROUTES.SITE}
-          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-        >
-          <CameraIcon className="h-4 w-4 transition-all group-hover:scale-110" />
-          <span className="sr-only">Parpics</span>
-        </Link>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                to={ROUTES.DASHBOARD.DASHBOARD}
-                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  isActive(ROUTES.DASHBOARD.DASHBOARD)
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                } transition-colors md:h-8 md:w-8`}
-              >
-                <Home className="h-5 w-5" />
-                <span className="sr-only">Dashboard</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Dashboard</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                to={ROUTES.CLIENTS.CLIENTS}
-                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  isActive(ROUTES.CLIENTS.CLIENTS)
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                } transition-colors md:h-8 md:w-8`}
-              >
-                <UsersIcon className="h-5 w-5" />
-                <span className="sr-only">Clients</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Clients</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                to={ROUTES.ANALYTICS}
-                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  isActive(ROUTES.ANALYTICS)
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                } transition-colors md:h-8 md:w-8`}
-              >
-                <ChartAreaIcon className="h-5 w-5" />
-                <span className="sr-only">Analytics</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Analytics</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                to="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Settings className="h-5 w-5" />
-                <span className="sr-only">Settings</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Settings</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </nav>
-    </aside>
   );
 };
 
