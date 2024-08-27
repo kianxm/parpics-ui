@@ -72,17 +72,35 @@ export const getClient = gql`
         assetId
         isFavorite
       }
+      settings {
+        enableWebsite
+        allowPhotoComments
+        allowAlbumComments
+        allowSingleDownload
+        allowBulkDownload
+        allowFavorites
+        allowSharing
+        allowViewing
+        allowPayment
+        showWatermark
+      }
     }
   }
 `;
 
-export const getClientPhotos = gql`
-  query GetClientPhotos($clientId: ID!) {
-    getClientPhotos(clientId: $clientId) {
-      url
-      publicId
-      version
-      assetId
+export const getClientSettings = gql`
+  query GetClientSettings($clientId: ID!) {
+    getClientSettings(clientId: $clientId) {
+      enableWebsite
+      allowPhotoComments
+      allowAlbumComments
+      allowSingleDownload
+      allowBulkDownload
+      allowFavorites
+      allowSharing
+      allowViewing
+      allowPayment
+      showWatermark
     }
   }
 `;
@@ -147,6 +165,18 @@ export const getAlbumPage = gql`
           text
           createdAt
         }
+      }
+      settings {
+        enableWebsite
+        allowPhotoComments
+        allowAlbumComments
+        allowSingleDownload
+        allowBulkDownload
+        allowFavorites
+        allowSharing
+        allowViewing
+        allowPayment
+        showWatermark
       }
     }
   }

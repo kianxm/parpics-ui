@@ -30,7 +30,6 @@ export default function ClientPage() {
   const { data: userData } = useQuery(getUserById, {
     variables: { userId: user?.user_id },
   });
-  console.log(userData);
 
   const { clientId } = useParams();
 
@@ -44,8 +43,8 @@ export default function ClientPage() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const client = data?.getClient as Client;
-  const photos = data?.getClient.photos;
+  const client: Client = data?.getClient;
+  const photos: Photo[] = data?.getClient.photos;
   const username = userData?.getUserById.username;
 
   const handleDeleteAll = async () => {
@@ -110,7 +109,7 @@ export default function ClientPage() {
           <ClientWebsiteSettings client={client} refetch={refetch} />
         </TabsContent>
         <TabsContent value="settings">
-          <ClientSettings />
+          <ClientSettings client={client} refetch={refetch} />
         </TabsContent>
       </Tabs>
 

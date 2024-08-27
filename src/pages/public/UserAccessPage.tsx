@@ -46,7 +46,6 @@ export default function UserAccessPage() {
         variables: { accessCode: accessCode },
       });
       const { isValid, link } = response.data.checkAccessCode;
-      console.log(response);
 
       if (isValid) {
         if (link) {

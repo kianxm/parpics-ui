@@ -11,6 +11,7 @@ import ViewerSignUpDialog from "../viewer/ViewerSignUpDialog";
 import { WebsiteTemplateProps } from "../../types/website";
 import { AuthContext } from "../../context/context";
 import { useContext, useState } from "react";
+import { ClientSettings } from "../../types/settings";
 
 // Modern Template
 const AlbumHeader = ({
@@ -24,11 +25,13 @@ const AlbumHeader = ({
   viewer: Viewer | null;
   logout: () => void;
 }) => {
+  const settings: ClientSettings = client.settings;
+
   return (
     <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-8 py-5 text-gray-800 z-10 bg-white shadow-sm">
       <h1 className="text-2xl font-semibold">{client.name}</h1>
       <div className="flex gap-2">
-        {client.hasPaid && (
+        {!client.hasPaid && settings.allowPayment ? (
           <Button
             className="px-3 py-1 bg-transparent rounded"
             variant="custom"
@@ -36,18 +39,22 @@ const AlbumHeader = ({
           >
             <IconCreditCardPay size={16} />
           </Button>
+        ) : null}
+        {settings.allowAlbumComments && (
+          <Button className="px-3 py-1 bg-transparent rounded" variant="custom">
+            <MessageSquareIcon size={16} />
+          </Button>
         )}
-        <Button className="px-3 py-1 bg-transparent rounded" variant="custom">
-          <MessageSquareIcon size={16} />
-        </Button>
-        <Button
-          className="px-3 py-1 bg-transparent text-gray-800 rounded"
-          variant="custom"
-          onClick={() => downloadAllImages(photoUrls)}
-          disabled={!client.hasPaid}
-        >
-          <Download size={16} />
-        </Button>
+        {settings.allowBulkDownload && (
+          <Button
+            className="px-3 py-1 bg-transparent text-gray-800 rounded"
+            variant="custom"
+            onClick={() => downloadAllImages(photoUrls)}
+            disabled={!client.hasPaid}
+          >
+            <Download size={16} />
+          </Button>
+        )}
         {viewer && (
           <Button
             className="px-3 py-1 bg-transparent rounded"
@@ -71,6 +78,7 @@ const GridItem = ({
   handleToggleFavoritePhoto,
   index,
   openModal,
+  settings,
 }: {
   photo: Photo;
   showWatermark: boolean;
@@ -80,6 +88,7 @@ const GridItem = ({
   handleToggleFavoritePhoto: (clientId: string, publicId: string) => void;
   index: number;
   openModal: (index: number) => void;
+  settings: ClientSettings;
 }) => {
   const Content = () => (
     <div
@@ -100,48 +109,54 @@ const GridItem = ({
       />
       <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black bg-opacity-20 rounded-lg cursor-pointer">
         <div className="flex space-x-2">
-          <Button
-            className="px-3 py-1 bg-transparent text-white rounded"
-            variant="custom"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!viewer) {
-                openSignInDialog();
-              } else {
-                handleToggleFavoritePhoto(clientId, photo.publicId);
-              }
-            }}
-          >
-            {!photo.isFavorite ? (
-              <Heart size={24} />
-            ) : (
-              <IconHeartFilled size={24} className="text-red-500" />
-            )}
-          </Button>
-          <Button
-            className="px-3 py-1 bg-transparent text-white rounded"
-            variant="custom"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!viewer) {
-                openSignInDialog();
-              } else {
-                openModal(index);
-              }
-            }}
-          >
-            <MessageSquareIcon size={24} />
-          </Button>
-          <Button
-            className="px-3 py-1 bg-transparent text-white rounded"
-            variant="custom"
-            onClick={(e) => {
-              e.stopPropagation();
-              downloadImage(photo.url);
-            }}
-          >
-            <Download size={24} />
-          </Button>
+          {settings.allowFavorites && (
+            <Button
+              className="px-3 py-1 bg-transparent text-white rounded"
+              variant="custom"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!viewer) {
+                  openSignInDialog();
+                } else {
+                  handleToggleFavoritePhoto(clientId, photo.publicId);
+                }
+              }}
+            >
+              {!photo.isFavorite ? (
+                <Heart size={24} />
+              ) : (
+                <IconHeartFilled size={24} className="text-red-500" />
+              )}
+            </Button>
+          )}
+          {settings.allowPhotoComments && (
+            <Button
+              className="px-3 py-1 bg-transparent text-white rounded"
+              variant="custom"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!viewer) {
+                  openSignInDialog();
+                } else {
+                  openModal(index);
+                }
+              }}
+            >
+              <MessageSquareIcon size={24} />
+            </Button>
+          )}
+          {settings.allowSingleDownload && (
+            <Button
+              className="px-3 py-1 bg-transparent text-white rounded"
+              variant="custom"
+              onClick={(e) => {
+                e.stopPropagation();
+                downloadImage(photo.url);
+              }}
+            >
+              <Download size={24} />
+            </Button>
+          )}
         </div>
       </div>
     </div>
@@ -164,6 +179,7 @@ const MasonryGrid = ({
   clientId,
   handleToggleFavoritePhoto,
   openModal,
+  settings,
 }: {
   images: Photo[];
   showWatermark: boolean;
@@ -172,6 +188,7 @@ const MasonryGrid = ({
   clientId: string;
   handleToggleFavoritePhoto: (clientId: string, publicId: string) => void;
   openModal: (index: number) => void;
+  settings: ClientSettings;
 }) => {
   return (
     <div className="columns-1 sm:columns-2 lg:columns-3 px-12 md:px-24 lg:px-36 gap-4 pb-12">
@@ -186,6 +203,7 @@ const MasonryGrid = ({
           handleToggleFavoritePhoto={handleToggleFavoritePhoto}
           index={index}
           openModal={openModal}
+          settings={settings}
         />
       ))}
     </div>
@@ -233,12 +251,13 @@ export default function TemplateOne({
 
       <MasonryGrid
         images={photos}
-        showWatermark={!client.hasPaid}
+        showWatermark={!client.hasPaid || client.settings.showWatermark}
         viewer={viewer}
         clientId={client.id}
         openSignInDialog={openSignInDialog}
         handleToggleFavoritePhoto={handleToggleFavoritePhoto}
         openModal={openModal}
+        settings={client.settings}
       />
 
       <ViewerSignUpDialog

@@ -114,3 +114,23 @@ export const UPDATE_CLIENT_WEBSITE_TEMPLATE = gql`
     updateClientWebsiteTemplate(clientId: $clientId, templateId: $templateId)
   }
 `;
+
+export const UPDATE_CLIENT_SETTINGS = gql`
+  mutation UpdateClientSettings(
+    $clientId: ID!
+    $settingsInput: ClientSettingsInput!
+  ) {
+    updateClientSettings(clientId: $clientId, settingsInput: $settingsInput) {
+      enableWebsite
+      allowPhotoComments
+      allowAlbumComments
+      allowSingleDownload
+      allowBulkDownload
+      allowFavorites
+      allowSharing
+      allowViewing
+      allowPayment
+      showWatermark
+    }
+  }
+`;

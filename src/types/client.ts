@@ -1,4 +1,5 @@
 import { Photo } from "./photo";
+import { ClientSettings } from "./settings";
 
 export interface Client {
   id: string;
@@ -12,8 +13,9 @@ export interface Client {
   photoCount: number | null;
   createdAt: string;
   updatedAt: string;
-  photo: Photo;
+  photos: [Photo];
   websiteTemplate: number;
+  settings: ClientSettings;
 }
 
 export interface DashboardOverview {
