@@ -7,21 +7,21 @@
 - [x] delete photos after deleting client
 - [ ] fix photoCount with multiple uploads
 - [ ] add infinite scroll pagination on album page
-- [ ] add favorites to photos
-- [ ] add comments to photos
-- [ ] create shareable link
+- [x] add favorites to photos
+- [x] add comments to photos
+- [x] create shareable link
 - [x] masonry grid
 - [ ] add comment to album
 - [ ] add storage caps
 - [ ] add image upload progress on dialog
-- [ ] add image open modal on click
+- [x] add image open modal on click
 - [ ] add sorting/filters to table/grid
 - [ ] add multiple delete images
 - [x] watermark unpaid albums
 - [ ] replace client pathname with subdomain
-- [ ] add name to user
-- [ ] create viewer account when viewer wants to comment/like on album
+- [x] add name to user
+- [x] create viewer account when viewer wants to comment/like on album
 - [ ] fix login/signup name values on view album
-- [ ]
-- [ ]
+- [ ] notification system
+- [x] client settings/feature flags
 - [ ]

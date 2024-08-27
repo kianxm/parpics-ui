@@ -25,5 +25,5 @@ export function uriPricing() {
 }
 
 export function uriAlbum(username: string, link: number | string) {
-  return generatePath(ROUTES.USER_ALBUM, { params: { username, link } });
+  return generatePath(ROUTES.USER.USER_ALBUM, { params: { username, link } });
 }

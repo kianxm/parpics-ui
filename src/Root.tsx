@@ -28,6 +28,21 @@ const ClientsPage = lazyHelp(() => import("./pages/ClientsPage"));
 const ClientPage = lazyHelp(() => import("./pages/ClientPage"));
 const UserAccessPage = lazyHelp(() => import("./pages/public/UserAccessPage"));
 const NewAlbumPage = lazyHelp(() => import("./pages/user/NewAlbumPage"));
+const SettingsProfilePage = lazyHelp(
+  () => import("./pages/user/SettingsProfilePage")
+);
+const SettingsAccountPage = lazyHelp(
+  () => import("./pages/user/SettingsAccountPage")
+);
+const SettingsAppearancePage = lazyHelp(
+  () => import("./pages/user/SettingsAppearancePage")
+);
+const SettingsNotificationsPage = lazyHelp(
+  () => import("./pages/user/SettingsNotificationsPage")
+);
+const SettingsDisplayPage = lazyHelp(
+  () => import("./pages/user/SettingsDisplayPage")
+);
 
 export default function Root() {
   return (
@@ -41,13 +56,12 @@ export default function Root() {
             </PublicLayout>
           }
         />
+
         <Route path={ROUTES.PRICING} element={<PricingPage />} />
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
         <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
-
         <Route path={ROUTES.USER_ACCESS} element={<UserAccessPage />} />
-
-        <Route path={ROUTES.USER_ALBUM} element={<NewAlbumPage />} />
+        <Route path={ROUTES.USER.USER_ALBUM} element={<NewAlbumPage />} />
 
         <Route
           path={ROUTES.DASHBOARD.DASHBOARD}
@@ -104,6 +118,66 @@ export default function Root() {
               element={
                 <NewLayout>
                   <ClientPage />
+                </NewLayout>
+              }
+            />
+          }
+        />
+        <Route
+          path={ROUTES.USER.SETTINGS.PROFILE}
+          element={
+            <ProtectedRoute
+              element={
+                <NewLayout>
+                  <SettingsProfilePage />
+                </NewLayout>
+              }
+            />
+          }
+        />
+        <Route
+          path={ROUTES.USER.SETTINGS.ACCOUNT}
+          element={
+            <ProtectedRoute
+              element={
+                <NewLayout>
+                  <SettingsAccountPage />
+                </NewLayout>
+              }
+            />
+          }
+        />
+        <Route
+          path={ROUTES.USER.SETTINGS.APPEARANCE}
+          element={
+            <ProtectedRoute
+              element={
+                <NewLayout>
+                  <SettingsAppearancePage />
+                </NewLayout>
+              }
+            />
+          }
+        />
+        <Route
+          path={ROUTES.USER.SETTINGS.NOTIFICATIONS}
+          element={
+            <ProtectedRoute
+              element={
+                <NewLayout>
+                  <SettingsNotificationsPage />
+                </NewLayout>
+              }
+            />
+          }
+        />
+        <Route
+          path={ROUTES.USER.SETTINGS.DISPLAY}
+          element={
+            <ProtectedRoute
+              element={
+                <NewLayout>
+                  <SettingsDisplayPage />
                 </NewLayout>
               }
             />
