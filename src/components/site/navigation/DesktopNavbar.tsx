@@ -2,11 +2,10 @@ import { Link } from "react-router-dom";
 import { ROUTES } from "../../../routes";
 import { LOGO_ALT, LOGO_SVG_PATH } from "../../../utils/constants";
 import { Button } from "../../ui/button";
-import { AuthContext } from "../../../context/context";
-import { useContext } from "react";
+import { useCurrentUser } from "../../../utils/useCurrentUser";
 
 export default function DesktopNavbar() {
-  const { user } = useContext(AuthContext);
+  const user = useCurrentUser();
 
   return (
     <div className="flex mt-6 items-center justify-between bg-gray-200 mx-auto px-2 py-2 rounded-full max-w-xl w-full">

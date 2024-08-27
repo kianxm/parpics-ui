@@ -40,7 +40,7 @@ export default function Hero() {
   ];
 
   return (
-    <div className="py-4 md:py-10 px-10 flex items-center flex-col text-center">
+    <div className="py-4 md:py-10 px-10 flex items-center flex-col text-center min-h-[650px] md:h-full">
       <EmojiAnimation />
       <motion.h1
         className="font-semibold text-4xl md:text-6xl lg:text-7xl"
@@ -72,12 +72,12 @@ export default function Hero() {
         <Button className="rounded-full bg-black">Join for free</Button>
         <Button
           variant="custom"
-          className="rounded-full bg-transparent border-gray-200 text-black border"
+          className="rounded-full bg-transparent border-gray-200 text-black border group"
         >
-          See our plans{" "}
+          See our plans
           <ArrowRight
             size={16}
-            className="bg-gray-200 rounded-full text-black ml-2"
+            className="bg-gray-200 rounded-full text-black ml-2 group-hover:translate-x-0.5 animate transition-transform duration-300"
           />
         </Button>
       </motion.div>
@@ -89,8 +89,16 @@ export default function Hero() {
         <p className="text-xs font-light text-stone-500 pb-4">
           Trusted by photographers from
         </p>
-        <div className="flex gap-8 text-stone-500/80 text-lg">
+        <div className="hidden md:flex gap-8 text-stone-500/80 text-lg">
           {companies.map((company, index) => (
+            <div key={index} className="flex gap-2 items-center">
+              {company.logo}
+              {company.name}
+            </div>
+          ))}
+        </div>
+        <div className="flex md:hidden gap-8 text-stone-500/80 text-lg">
+          {companies.slice(0, 3).map((company, index) => (
             <div key={index} className="flex gap-2 items-center">
               {company.logo}
               {company.name}
