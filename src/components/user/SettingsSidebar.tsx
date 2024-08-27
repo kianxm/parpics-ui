@@ -6,6 +6,7 @@ interface SettingsSidebarProps extends React.HTMLAttributes<HTMLElement> {
   items: {
     href: string;
     title: string;
+    disabled: boolean;
   }[];
 }
 
@@ -27,11 +28,14 @@ export function SettingsSidebar({
       {items.map((item) => (
         <Link
           key={item.href}
-          to={item.href}
+          to={item.disabled ? "#" : item.href}
           className={cn(
             buttonVariants({ variant: "ghost" }),
+            item.disabled
+              ? "text-gray-500 cursor-not-allowed" // Disabled styles
+              : "text-current",
             pathname === item.href
-              ? "bg-muted hover:bg-muted" // Ensure active link styling
+              ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
             "justify-start"
           )}

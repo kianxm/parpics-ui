@@ -3,11 +3,19 @@ import { SettingsSidebar } from "../components/user/SettingsSidebar";
 import { ROUTES } from "../routes";
 
 const sidebarNavItems = [
-  { title: "Profile", href: ROUTES.USER.SETTINGS.PROFILE },
-  { title: "Account", href: ROUTES.USER.SETTINGS.ACCOUNT },
-  { title: "Appearance", href: ROUTES.USER.SETTINGS.APPEARANCE },
-  { title: "Notifications", href: ROUTES.USER.SETTINGS.NOTIFICATIONS },
-  { title: "Display", href: ROUTES.USER.SETTINGS.DISPLAY },
+  { title: "Profile", href: ROUTES.USER.SETTINGS.PROFILE, disabled: false },
+  { title: "Account", href: ROUTES.USER.SETTINGS.ACCOUNT, disabled: false },
+  {
+    title: "Appearance",
+    href: ROUTES.USER.SETTINGS.APPEARANCE,
+    disabled: false,
+  },
+  {
+    title: "Notifications",
+    href: ROUTES.USER.SETTINGS.NOTIFICATIONS,
+    disabled: true,
+  },
+  { title: "Display", href: ROUTES.USER.SETTINGS.DISPLAY, disabled: true },
 ];
 
 interface SettingsLayoutProps {
@@ -29,7 +37,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <aside className="-mx-4 lg:w-1/5">
             <SettingsSidebar items={sidebarNavItems} />
           </aside>
-          <div className="flex-1 lg:max-w-2xl">{children}</div>
+          <div className="flex-1 max-w-2xl">{children}</div>
         </div>
       </div>
     </>
