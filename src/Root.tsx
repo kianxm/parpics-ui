@@ -9,6 +9,7 @@ import NewLayout from "./layouts/NewLayout";
 import CreateClientPage from "./pages/CreateClientPage";
 import ProtectedRoute from "./lib/ProtectedRoute";
 import { ProtectedLayoutWrapper } from "./lib/ProtectedLayoutWrapper";
+import Spinner from "./components/Spinner";
 
 function lazyHelp<T extends Record<string, ComponentType<any>>>(
   fn: () => Promise<T>,
@@ -46,7 +47,13 @@ const SettingsDisplayPage = lazyHelp(
 
 export default function Root() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <Spinner />
+        </div>
+      }
+    >
       <Routes>
         <Route
           path={ROUTES.SITE}
