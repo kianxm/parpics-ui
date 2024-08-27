@@ -1,32 +1,27 @@
-import { useMutation, useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
-import { Photo } from "../../types/photo";
-import { Button } from "../../components/ui/button";
-import { Download, Heart, LogOut, MessageSquareIcon } from "lucide-react";
-import { getAlbumPage, getUserById } from "../../queries/queries";
-import { Client } from "../../types/client";
-import JSZip from "jszip";
-import { saveAs } from "file-saver";
-import { Watermark } from "@hirohe/react-watermark";
-import { useContext, useState } from "react";
-import { AuthContext } from "../../context/context";
-import { Viewer } from "../../types/user";
-import ViewerSignUpDialog from "../../components/viewer/ViewerSignUpDialog";
-import { TOGGLE_FAVORITE_PHOTO } from "../../mutations/client";
 import { IconCreditCardPay, IconHeartFilled } from "@tabler/icons-react";
-import { ImageModal } from "../../components/viewer/ImageModal";
+import { Client } from "../../types/client";
+import { Viewer } from "../../types/user";
+import { Button } from "../ui/button";
+import { Download, Heart, LogOut, MessageSquareIcon } from "lucide-react";
+import { downloadAllImages, downloadImage } from "../../utils/download";
+import { Photo } from "../../types/photo";
+import { Watermark } from "@hirohe/react-watermark";
+import { ImageModal } from "../viewer/ImageModal";
+import ViewerSignUpDialog from "../viewer/ViewerSignUpDialog";
+import { WebsiteTemplateProps } from "../../types/website";
+import { AuthContext } from "../../context/context";
+import { useContext, useState } from "react";
 
+// Modern Template
 const AlbumHeader = ({
   client,
   photoUrls,
   viewer,
-  clientId,
   logout,
 }: {
   client: Client;
   photoUrls: string[];
   viewer: Viewer | null;
-  clientId: string;
   logout: () => void;
 }) => {
   return (
@@ -140,7 +135,10 @@ const GridItem = ({
           <Button
             className="px-3 py-1 bg-transparent text-white rounded"
             variant="custom"
-            onClick={() => downloadImage(photo.url)}
+            onClick={(e) => {
+              e.stopPropagation();
+              downloadImage(photo.url);
+            }}
           >
             <Download size={24} />
           </Button>
@@ -194,37 +192,16 @@ const MasonryGrid = ({
   );
 };
 
-const downloadImage = async (url: string) => {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  const filename = url.split("/").pop() || "image";
-  saveAs(blob, filename);
-};
-
-const downloadAllImages = async (urls: string[]) => {
-  const zip = new JSZip();
-
-  await Promise.all(
-    urls.map(async (url) => {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const filename = url.split("/").pop() || "image";
-      zip.file(filename, blob);
-    })
-  );
-
-  zip.generateAsync({ type: "blob" }).then((content) => {
-    saveAs(content, ".zip");
-  });
-};
-
-export default function ViewAlbumPage() {
-  const { user, logout } = useContext(AuthContext);
-
-  const { data: userData } = useQuery(getUserById, {
-    variables: { userId: user?.user_id },
-    skip: !user,
-  });
+export default function TemplateOne({
+  client,
+  photos,
+  mainPhoto,
+  photoUrls,
+  viewer,
+  handleToggleFavoritePhoto,
+  refetch,
+}: WebsiteTemplateProps) {
+  const { logout } = useContext(AuthContext);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const openSignInDialog = () => setIsDialogOpen(true);
@@ -237,49 +214,12 @@ export default function ViewAlbumPage() {
     setIsModalOpen(true);
   };
 
-  const { link } = useParams();
-
-  const { loading, error, data, refetch } = useQuery(getAlbumPage, {
-    variables: { link },
-  });
-
-  const clientId = data?.getAlbumPage.id;
-
-  const [toggleFavoritePhoto] = useMutation(TOGGLE_FAVORITE_PHOTO);
-
-  const handleToggleFavoritePhoto = async (
-    clientId: string,
-    publicId: string
-  ) => {
-    try {
-      await toggleFavoritePhoto({
-        variables: { clientId, publicId },
-        onCompleted: () => refetch(),
-      });
-    } catch (error) {
-      console.error("Error deleting photo:", error);
-    }
-  };
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-
-  const currentUser = userData?.getUserById as Viewer;
-  const client = data?.getAlbumPage as Client;
-  const photos = data?.getAlbumPage.photos;
-  const mainPhoto = data?.getAlbumPage.photos[0];
-
-  if (!photos) return <p>No photos found</p>;
-
-  const photoUrls = photos.map((photo: Photo) => photo.url);
-
   return (
     <div className="flex flex-col min-h-screen">
       <AlbumHeader
         client={client}
         photoUrls={photoUrls}
-        viewer={user}
-        clientId={clientId}
+        viewer={viewer}
         logout={logout}
       />
 
@@ -294,8 +234,8 @@ export default function ViewAlbumPage() {
       <MasonryGrid
         images={photos}
         showWatermark={!client.hasPaid}
-        viewer={user}
-        clientId={clientId}
+        viewer={viewer}
+        clientId={client.id}
         openSignInDialog={openSignInDialog}
         handleToggleFavoritePhoto={handleToggleFavoritePhoto}
         openModal={openModal}
@@ -312,7 +252,7 @@ export default function ViewAlbumPage() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         client={client}
-        viewer={currentUser}
+        viewer={viewer}
         downloadImage={downloadImage}
         handleToggleFavoritePhoto={handleToggleFavoritePhoto}
         refetch={refetch}

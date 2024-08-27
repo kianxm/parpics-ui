@@ -27,7 +27,7 @@ const Dashboard = lazyHelp(() => import("./pages/Dashboard"));
 const ClientsPage = lazyHelp(() => import("./pages/ClientsPage"));
 const ClientPage = lazyHelp(() => import("./pages/ClientPage"));
 const UserAccessPage = lazyHelp(() => import("./pages/public/UserAccessPage"));
-const ViewAlbumPage = lazyHelp(() => import("./pages/user/ViewAlbumPage"));
+const NewAlbumPage = lazyHelp(() => import("./pages/user/NewAlbumPage"));
 
 export default function Root() {
   return (
@@ -47,7 +47,7 @@ export default function Root() {
 
         <Route path={ROUTES.USER_ACCESS} element={<UserAccessPage />} />
 
-        <Route path={ROUTES.USER_ALBUM} element={<ViewAlbumPage />} />
+        <Route path={ROUTES.USER_ALBUM} element={<NewAlbumPage />} />
 
         <Route
           path={ROUTES.DASHBOARD.DASHBOARD}
@@ -80,6 +80,18 @@ export default function Root() {
               element={
                 <NewLayout>
                   <CreateClientPage />
+                </NewLayout>
+              }
+            />
+          }
+        />
+        <Route
+          path={ROUTES.CLIENTS.CLIENT}
+          element={
+            <ProtectedRoute
+              element={
+                <NewLayout>
+                  <ClientPage />
                 </NewLayout>
               }
             />

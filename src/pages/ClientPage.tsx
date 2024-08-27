@@ -13,6 +13,14 @@ import { DELETE_ALL_CLIENT_PHOTOS } from "../mutations/client";
 import EditClientDialog from "../components/client/EditClientDialog";
 import { uriAlbum } from "../utils/uri";
 import { IconLink } from "@tabler/icons-react";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
+import ClientSettings from "../components/client/ClientSettings";
+import ClientWebsiteSettings from "../components/client/ClientWebsiteSettings";
 
 export default function ClientPage() {
   const { clientId } = useParams();
@@ -42,7 +50,7 @@ export default function ClientPage() {
   return (
     <>
       <div className="flex justify-between">
-        <span className="font-semibold text-2xl mt-1 flex gap-2 items-center">
+        <span className="font-semibold text-2xl mt-1 flex gap-2 items-center mb-2">
           {client.name}
           <Link to={uriAlbum("admin", client.link)}>
             <Button variant="ghost" className="px-3 py-0">
@@ -64,20 +72,35 @@ export default function ClientPage() {
         </div>
       </div>
 
-      <div className="flex gap-12 mb-4">
+      {/* <div className="flex gap-12 mb-4">
         <span>Access Code: {client.accessCode}</span>
         <span>Location: {client.location}</span>
         <span>Date: {formatDate(client.date)}</span>
         <span>Photo Count: {client.photoCount}</span>
-      </div>
+      </div> */}
 
-      {photos.length > 0 ? (
-        <PhotoTable photos={photos as Photo[]} refetch={refetch} />
-      ) : (
-        <div className="flex items-center justify-center h-full w-full text-center mt-16">
-          No client photos
-        </div>
-      )}
+      <Tabs defaultValue="photos">
+        <TabsList>
+          <TabsTrigger value="photos">Photos</TabsTrigger>
+          <TabsTrigger value="website">Website</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
+        </TabsList>
+        <TabsContent value="photos">
+          {photos.length > 0 ? (
+            <PhotoTable photos={photos as Photo[]} refetch={refetch} />
+          ) : (
+            <div className="flex items-center justify-center h-full w-full text-center mt-16">
+              No client photos
+            </div>
+          )}
+        </TabsContent>
+        <TabsContent value="website">
+          <ClientWebsiteSettings client={client} refetch={refetch} />
+        </TabsContent>
+        <TabsContent value="settings">
+          <ClientSettings />
+        </TabsContent>
+      </Tabs>
 
       {deleteError && (
         <div className="text-red-500 mt-4">
