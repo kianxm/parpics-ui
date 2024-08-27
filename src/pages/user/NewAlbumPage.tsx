@@ -1,23 +1,18 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { Suspense, useContext } from "react";
+import { Suspense } from "react";
 import { useParams } from "react-router-dom";
 import { getAlbumPage, getUserById } from "../../queries/queries";
 import { templates } from "../../utils/templates";
-import { AuthContext } from "../../context/context";
 import { TOGGLE_FAVORITE_PHOTO } from "../../mutations/client";
 import { Viewer } from "../../types/user";
 import { Client } from "../../types/client";
 import { Photo } from "../../types/photo";
+import { useCurrentUser } from "../../utils/useCurrentUser";
 
 export default function NewAlbumPage() {
+  const user = useCurrentUser();
+
   const { link } = useParams();
-
-  const { user } = useContext(AuthContext);
-
-  const { data: userData } = useQuery(getUserById, {
-    variables: { userId: user?.user_id },
-    skip: !user,
-  });
 
   const { data, loading, error, refetch } = useQuery(getAlbumPage, {
     variables: { link },
@@ -37,7 +32,7 @@ export default function NewAlbumPage() {
   const TemplateComponent = template.component;
 
   // Extract data for the template component
-  const currentUser = userData?.getUserById as Viewer;
+  // const currentUser = userData?.getUserById as Viewer;
   const client = data?.getAlbumPage as Client;
   const photos = data?.getAlbumPage.photos || [];
   const mainPhoto = photos[0];
@@ -56,11 +51,11 @@ export default function NewAlbumPage() {
   return (
     <Suspense fallback={<div>Loading template...</div>}>
       <TemplateComponent
+        user={user}
         client={client}
         photos={photos}
         mainPhoto={mainPhoto}
         photoUrls={photoUrls}
-        viewer={currentUser}
         handleToggleFavoritePhoto={handleToggleFavoritePhoto}
         refetch={refetch}
       />

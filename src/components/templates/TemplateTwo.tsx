@@ -3,11 +3,11 @@ import { AuthContext } from "../../context/context";
 import { WebsiteTemplateProps } from "../../types/website";
 
 export default function TemplateTwo({
+  user,
   client,
   photos,
   mainPhoto,
   photoUrls,
-  viewer,
   handleToggleFavoritePhoto,
   refetch,
 }: WebsiteTemplateProps) {

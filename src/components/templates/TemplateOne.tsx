@@ -1,6 +1,6 @@
 import { IconCreditCardPay, IconHeartFilled } from "@tabler/icons-react";
 import { Client } from "../../types/client";
-import { Viewer } from "../../types/user";
+import { User, Viewer } from "../../types/user";
 import { Button } from "../ui/button";
 import { Download, Heart, LogOut, MessageSquareIcon } from "lucide-react";
 import { downloadAllImages, downloadImage } from "../../utils/download";
@@ -17,12 +17,12 @@ import { ClientSettings } from "../../types/settings";
 const AlbumHeader = ({
   client,
   photoUrls,
-  viewer,
+  user,
   logout,
 }: {
   client: Client;
   photoUrls: string[];
-  viewer: Viewer | null;
+  user: User | null;
   logout: () => void;
 }) => {
   const settings: ClientSettings = client.settings;
@@ -55,7 +55,7 @@ const AlbumHeader = ({
             <Download size={16} />
           </Button>
         )}
-        {viewer && (
+        {user && (
           <Button
             className="px-3 py-1 bg-transparent rounded"
             variant="custom"
@@ -72,7 +72,7 @@ const AlbumHeader = ({
 const GridItem = ({
   photo,
   showWatermark,
-  viewer,
+  user,
   openSignInDialog,
   clientId,
   handleToggleFavoritePhoto,
@@ -82,7 +82,7 @@ const GridItem = ({
 }: {
   photo: Photo;
   showWatermark: boolean;
-  viewer: Viewer | null;
+  user: User | null;
   openSignInDialog: () => void;
   clientId: string;
   handleToggleFavoritePhoto: (clientId: string, publicId: string) => void;
@@ -95,7 +95,7 @@ const GridItem = ({
       className="relative mb-4 break-inside-avoid"
       onClick={(e) => {
         e.stopPropagation();
-        if (!viewer) {
+        if (!user) {
           openSignInDialog();
         } else {
           openModal(index);
@@ -115,7 +115,7 @@ const GridItem = ({
               variant="custom"
               onClick={(e) => {
                 e.stopPropagation();
-                if (!viewer) {
+                if (!user) {
                   openSignInDialog();
                 } else {
                   handleToggleFavoritePhoto(clientId, photo.publicId);
@@ -135,7 +135,7 @@ const GridItem = ({
               variant="custom"
               onClick={(e) => {
                 e.stopPropagation();
-                if (!viewer) {
+                if (!user) {
                   openSignInDialog();
                 } else {
                   openModal(index);
@@ -174,7 +174,7 @@ const GridItem = ({
 const MasonryGrid = ({
   images,
   showWatermark,
-  viewer,
+  user,
   openSignInDialog,
   clientId,
   handleToggleFavoritePhoto,
@@ -183,7 +183,7 @@ const MasonryGrid = ({
 }: {
   images: Photo[];
   showWatermark: boolean;
-  viewer: Viewer | null;
+  user: User | null;
   openSignInDialog: () => void;
   clientId: string;
   handleToggleFavoritePhoto: (clientId: string, publicId: string) => void;
@@ -197,7 +197,7 @@ const MasonryGrid = ({
           key={photo.publicId}
           photo={photo}
           showWatermark={showWatermark}
-          viewer={viewer}
+          user={user}
           clientId={clientId}
           openSignInDialog={openSignInDialog}
           handleToggleFavoritePhoto={handleToggleFavoritePhoto}
@@ -211,11 +211,11 @@ const MasonryGrid = ({
 };
 
 export default function TemplateOne({
+  user,
   client,
   photos,
   mainPhoto,
   photoUrls,
-  viewer,
   handleToggleFavoritePhoto,
   refetch,
 }: WebsiteTemplateProps) {
@@ -237,7 +237,7 @@ export default function TemplateOne({
       <AlbumHeader
         client={client}
         photoUrls={photoUrls}
-        viewer={viewer}
+        user={user}
         logout={logout}
       />
 
@@ -252,7 +252,7 @@ export default function TemplateOne({
       <MasonryGrid
         images={photos}
         showWatermark={!client.hasPaid || client.settings.showWatermark}
-        viewer={viewer}
+        user={user}
         clientId={client.id}
         openSignInDialog={openSignInDialog}
         handleToggleFavoritePhoto={handleToggleFavoritePhoto}
@@ -271,7 +271,6 @@ export default function TemplateOne({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         client={client}
-        viewer={viewer}
         downloadImage={downloadImage}
         handleToggleFavoritePhoto={handleToggleFavoritePhoto}
         refetch={refetch}

@@ -8,22 +8,16 @@ import {
   Plus,
   Trash,
   UserIcon,
-  X,
 } from "lucide-react";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from "../ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { useMutation } from "@apollo/client";
 import { ADD_COMMENT_TO_PHOTO, DELETE_COMMENT } from "../../mutations/client";
 import { Client } from "../../types/client";
-import { Viewer } from "../../types/user";
 import { Separator } from "../ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { IconHeartFilled, IconMessagePlus } from "@tabler/icons-react";
+import { useCurrentUser } from "../../utils/useCurrentUser";
 
 type ImageModalProps = {
   images: Photo[];
@@ -31,7 +25,6 @@ type ImageModalProps = {
   isOpen: boolean;
   onClose: () => void;
   client: Client;
-  viewer: Viewer;
   handleToggleFavoritePhoto: (clientId: string, publicId: string) => void;
   downloadImage: (url: string) => void;
   refetch: () => void;
@@ -43,11 +36,11 @@ export const ImageModal = ({
   isOpen,
   onClose,
   client,
-  viewer,
   handleToggleFavoritePhoto,
   downloadImage,
   refetch,
 }: ImageModalProps) => {
+  const user = useCurrentUser();
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [newComment, setNewComment] = useState("");
   const [addCommentToPhoto] = useMutation(ADD_COMMENT_TO_PHOTO);
@@ -60,7 +53,11 @@ export const ImageModal = ({
         variables: {
           clientId: client.id,
           publicId: photo.publicId,
-          commentInput: { author: viewer.name, text: newComment },
+          commentInput: {
+            authorId: user.user_id,
+            authorName: user.name,
+            text: newComment,
+          },
         },
         onCompleted: () => {
           setNewComment("");
@@ -112,6 +109,7 @@ export const ImageModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogTitle />
       <DialogContent className="max-w-5xl p-1 bg-white text-black">
         <div className="flex flex-col sm:flex-row h-full lg:max-h-[900px]">
           {/* Image Section */}
@@ -189,14 +187,18 @@ export const ImageModal = ({
                         <AvatarImage src="https://github.com/shadcn.png" />
                         <AvatarFallback>{<UserIcon />}</AvatarFallback>
                       </Avatar>
-                      <span className="font-medium grow">{comment.author}</span>
-                      <Button
-                        onClick={() => handleDeleteComment(comment.id)}
-                        variant="ghost"
-                        size="icon"
-                      >
-                        <Trash size={12} />
-                      </Button>
+                      <span className="font-medium grow">
+                        {comment.authorName}
+                      </span>
+                      {comment.authorId === user.user_id && (
+                        <Button
+                          onClick={() => handleDeleteComment(comment.id)}
+                          variant="ghost"
+                          size="icon"
+                        >
+                          <Trash size={12} />
+                        </Button>
+                      )}
                     </div>
                     {comment.text}
                   </div>
