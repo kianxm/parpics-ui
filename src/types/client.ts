@@ -13,6 +13,7 @@ export interface Client {
   createdAt: string;
   updatedAt: string;
   photo: Photo;
+  websiteTemplate: number;
 }
 
 export interface DashboardOverview {

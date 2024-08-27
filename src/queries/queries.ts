@@ -59,6 +59,7 @@ export const getClient = gql`
       hasPaid
       createdAt
       updatedAt
+      websiteTemplate
       photoCount
       photos {
         name
@@ -129,6 +130,7 @@ export const getAlbumPage = gql`
       updatedAt
       photoCount
       userId
+      websiteTemplate
       photos {
         name
         createdAt

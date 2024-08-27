@@ -108,3 +108,9 @@ export const DELETE_COMMENT = gql`
     )
   }
 `;
+
+export const UPDATE_CLIENT_WEBSITE_TEMPLATE = gql`
+  mutation UpdateClientWebsiteTemplate($clientId: ID!, $templateId: Int!) {
+    updateClientWebsiteTemplate(clientId: $clientId, templateId: $templateId)
+  }
+`;
