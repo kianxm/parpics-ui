@@ -1,6 +1,7 @@
 import {
   BellIcon,
   Camera,
+  ChartAreaIcon,
   Home,
   PanelLeft,
   Search,
@@ -63,6 +64,13 @@ const Header = () => {
               Dashboard
             </Link>
             <Link
+              to={ROUTES.DASHBOARD.NOTIFICATIONS}
+              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+            >
+              <BellIcon className="h-5 w-5" />
+              Notifications
+            </Link>
+            <Link
               to={ROUTES.CLIENTS.CLIENTS}
               className="flex items-center gap-4 px-2.5 text-foreground"
             >
@@ -73,15 +81,8 @@ const Header = () => {
               to={ROUTES.DASHBOARD.ANALYTICS}
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
-              <SettingsIcon className="h-5 w-5" />
+              <ChartAreaIcon className="h-5 w-5" />
               Analytics
-            </Link>
-            <Link
-              to={ROUTES.DASHBOARD.NOTIFICATIONS}
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <BellIcon className="h-5 w-5" />
-              Notifications
             </Link>
             <Link
               to="#"

@@ -49,6 +49,22 @@ const Sidebar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
+                to={ROUTES.DASHBOARD.NOTIFICATIONS}
+                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                  isActive(ROUTES.DASHBOARD.NOTIFICATIONS)
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                } transition-colors md:h-8 md:w-8`}
+              >
+                <BellIcon className="h-5 w-5" />
+                <span className="sr-only">Notifications</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Notifications</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
                 to={ROUTES.CLIENTS.CLIENTS}
                 className={`flex h-9 w-9 items-center justify-center rounded-lg ${
                   isActive(ROUTES.CLIENTS.CLIENTS)
@@ -77,22 +93,6 @@ const Sidebar = () => {
               </Link>
             </TooltipTrigger>
             <TooltipContent side="right">Analytics</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                to={ROUTES.DASHBOARD.NOTIFICATIONS}
-                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  isActive(ROUTES.DASHBOARD.NOTIFICATIONS)
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                } transition-colors md:h-8 md:w-8`}
-              >
-                <BellIcon className="h-5 w-5" />
-                <span className="sr-only">Notifications</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Notifications</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </nav>

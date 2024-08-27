@@ -40,9 +40,10 @@ export default function ClientWebsiteSettings({
           <div
             key={template.name}
             className={cn(
-              selectedTemplateIndex === index ? "border-2 border-black" : "",
-              "p-4 bg-gray-200 cursor-pointer rounded-lg flex flex-col items-center min-h-48",
-              "transition-transform transform hover:scale-105"
+              selectedTemplateIndex === index
+                ? "border-2 border-black shadow-md"
+                : "",
+              "p-4 bg-gray-200 cursor-pointer rounded-lg flex flex-col items-center justify-center min-h-48"
             )}
             onClick={() => setSelectedTemplateIndex(index)}
           >
