@@ -21,7 +21,31 @@
 - [ ] replace client pathname with subdomain
 - [x] add name to user
 - [x] create viewer account when viewer wants to comment/like on album
-- [ ] fix login/signup name values on view album
+- [ ] fix login/signup name values on view album (buggy)
 - [ ] notification system
 - [x] client settings/feature flags
+- [x] only authors can delete comments
+- [ ] create more website album templates
+- [ ] setup portfolio website for users
+- [ ] watermark photos on download (if unpaid)
+- [ ] disable website when no photos in the album
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
 - [ ]
