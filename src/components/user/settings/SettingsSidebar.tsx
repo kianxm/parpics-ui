@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { cn } from "../../lib/utils";
-import { buttonVariants } from "../ui/button";
+import { cn } from "../../../lib/utils";
+import { buttonVariants } from "../../ui/button";
 
 interface SettingsSidebarProps extends React.HTMLAttributes<HTMLElement> {
   items: {

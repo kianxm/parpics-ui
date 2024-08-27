@@ -1,5 +1,5 @@
 import { Separator } from "../components/ui/separator";
-import { SettingsSidebar } from "../components/user/SettingsSidebar";
+import { SettingsSidebar } from "../components/user/settings/SettingsSidebar";
 import { ROUTES } from "../routes";
 
 const sidebarNavItems = [
