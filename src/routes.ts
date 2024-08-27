@@ -13,7 +13,7 @@ export const ROUTES = {
     CREATE: "/dashboard/clients/new",
   },
   USER_ACCESS: "/access/:username",
-  USER_ALBUM: "/user/:username/:link",
+  USER_ALBUM: "/u/:username/:link",
   ABOUT: "/about",
   PRICING: "/pricing",
   PROFILE: "/profile",
