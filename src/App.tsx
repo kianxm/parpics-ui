@@ -6,7 +6,7 @@ import { AuthProvider } from "./context/context";
 
 function App() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-full">
       <AuthProvider>
         <ApolloProvider client={client}>
           <Router>
