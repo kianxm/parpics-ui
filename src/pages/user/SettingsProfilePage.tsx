@@ -1,20 +1,10 @@
-import { useQuery } from "@apollo/client";
-import { Suspense, useContext } from "react";
 import { Separator } from "../../components/ui/separator";
 import { ProfileForm } from "../../components/user/settings/ProfileForm";
-import { AuthContext } from "../../context/context";
+import { useCurrentUser } from "../../utils/useCurrentUser";
 import SettingsLayout from "../../layouts/SettingsLayout";
-import { getUserById } from "../../queries/queries";
 
 export default function SettingsProfilePage() {
-  const { user } = useContext(AuthContext);
-  const { data: userData, loading } = useQuery(getUserById, {
-    variables: { userId: user?.user_id },
-  });
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const user = useCurrentUser();
 
   return (
     <SettingsLayout>
@@ -26,9 +16,7 @@ export default function SettingsProfilePage() {
           </p>
         </div>
         <Separator />
-        <Suspense fallback={<div>Loading Profile Form...</div>}>
-          <ProfileForm user={userData?.getUserById} />
-        </Suspense>
+        <ProfileForm user={user} />
       </div>
     </SettingsLayout>
   );
