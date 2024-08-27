@@ -4,13 +4,13 @@ import { AuthContext } from "../context/context";
 import { ROUTES } from "../routes";
 
 interface ProtectedRouteProps {
-  element: JSX.Element;
+  children: JSX.Element;
 }
 
-const ProtectedRoute = ({ element }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { user } = useContext(AuthContext);
 
-  return user ? element : <Navigate to={ROUTES.LOGIN} />;
+  return user ? children : <Navigate to={ROUTES.LOGIN} />;
 };
 
 export default ProtectedRoute;
