@@ -111,6 +111,8 @@ export const getDashboardOverview = gql`
       totalClients
       totalPaidClients
       totalPhotos
+      storageUsed
+      storageRemaining
     }
   }
 `;
@@ -161,7 +163,8 @@ export const getAlbumPage = gql`
         isFavorite
         comments {
           id
-          author
+          authorId
+          authorName
           text
           createdAt
         }
