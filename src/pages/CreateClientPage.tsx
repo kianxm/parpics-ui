@@ -11,16 +11,17 @@ import { Button } from "../components/ui/button";
 import { useMutation } from "@apollo/client";
 import { CREATE_CLIENT } from "../mutations/client";
 import { GraphQLFormattedError } from "graphql";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/context";
 import { useForm } from "../utils/hooks";
 import { Separator } from "../components/ui/separator";
 import { ROUTES } from "../routes";
+import { useCurrentUser } from "../utils/useCurrentUser";
 
 export default function CreateClientPage() {
+  const user = useCurrentUser();
+
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
   const [errors, setErrors] = useState<readonly GraphQLFormattedError[]>([]);
 
   function createClientCallback() {

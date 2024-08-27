@@ -92,7 +92,8 @@ export const ADD_COMMENT_TO_PHOTO = gql`
       assetId
       isFavorite
       comments {
-        author
+        authorId
+        authorName
         text
       }
     }

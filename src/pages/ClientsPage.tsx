@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import ClientTable from "../components/client/ClientTable";
 import { useMutation, useQuery } from "@apollo/client";
 import { getAllClientsByUserId } from "../queries/queries";
@@ -7,13 +6,22 @@ import { ROUTES } from "../routes";
 import { Button } from "../components/ui/button";
 import { Plus } from "lucide-react";
 import { Client } from "../types/client";
-import { AuthContext } from "../context/context";
 import { CREATE_CLIENT } from "../mutations/client";
 import { mockClients } from "../utils/mock";
+import { useCurrentUser } from "../utils/useCurrentUser";
+import Spinner from "../components/Spinner";
+import { Suspense } from "react";
 
 export default function ClientsPage() {
-  const { user } = useContext(AuthContext);
+  const user = useCurrentUser();
+
   const [createClient] = useMutation(CREATE_CLIENT);
+
+  const { loading, error, data, refetch } = useQuery(getAllClientsByUserId, {
+    variables: { userId: user.user_id },
+  });
+
+  const clients: Client[] = data?.getAllClientsByUserId;
 
   const createMockClient = async () => {
     try {
@@ -33,11 +41,7 @@ export default function ClientsPage() {
     }
   };
 
-  const { loading, error, data, refetch } = useQuery(getAllClientsByUserId, {
-    variables: { userId: user.user_id },
-  });
-
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
@@ -59,10 +63,9 @@ export default function ClientsPage() {
           </Link>
         </div>
       </div>
-      <ClientTable
-        clients={data.getAllClientsByUserId as Client[]}
-        refetch={refetch}
-      />
+      <Suspense fallback={<Spinner />}>
+        <ClientTable clients={clients} refetch={refetch} />
+      </Suspense>
     </>
   );
 }

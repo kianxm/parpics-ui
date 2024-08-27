@@ -1,8 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { Link, useParams } from "react-router-dom";
-import { getClient, getUserById } from "../queries/queries";
+import { getClient } from "../queries/queries";
 import { Client } from "../types/client";
-import { formatDate } from "../utils/format";
 import Tag from "../components/ui/tag";
 import { CLIENT_PAID, CLIENT_UNPAID } from "../utils/constants";
 import PhotoUploader from "../components/photo-uploader/PhotoUploader";
@@ -21,15 +20,11 @@ import {
 } from "../components/ui/tabs";
 import ClientSettings from "../components/client/ClientSettings";
 import ClientWebsiteSettings from "../components/client/ClientWebsiteSettings";
-import { useContext } from "react";
-import { AuthContext } from "../context/context";
+import { useCurrentUser } from "../utils/useCurrentUser";
 
 export default function ClientPage() {
-  const { user } = useContext(AuthContext);
-
-  const { data: userData } = useQuery(getUserById, {
-    variables: { userId: user?.user_id },
-  });
+  const user = useCurrentUser();
+  console.log(user);
 
   const { clientId } = useParams();
 
@@ -45,7 +40,6 @@ export default function ClientPage() {
 
   const client: Client = data?.getClient;
   const photos: Photo[] = data?.getClient.photos;
-  const username = userData?.getUserById.username;
 
   const handleDeleteAll = async () => {
     try {
@@ -61,7 +55,7 @@ export default function ClientPage() {
       <div className="flex justify-between">
         <span className="font-semibold text-2xl mt-1 flex gap-2 items-center mb-2">
           {client.name}
-          <Link to={uriAlbum(username, client.link)}>
+          <Link to={uriAlbum(user.username, client.link)}>
             <Button variant="ghost" className="px-3 py-0">
               <IconLink size={16} />
             </Button>
