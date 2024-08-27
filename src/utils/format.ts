@@ -21,15 +21,32 @@ export function formatDatePST(date: string) {
 // For KB -> MB, MB -> GB, etc.
 export function formatSize(size: number) {
   if (size < 1024) {
-    return `${size} B`;
+    return `${size}B`;
   }
   if (size < 1024 * 1024) {
-    return `${(size / 1024).toFixed(0)} KB`;
+    return `${(size / 1024).toFixed(0)}KB`;
   }
   if (size < 1024 * 1024 * 1024) {
     return `${(size / 1024 / 1024).toFixed(1)} MB`;
   }
-  return `${(size / 1024 / 1024 / 1024).toFixed(2)} GB`;
+  return `${(size / 1024 / 1024 / 1024).toFixed(1)} GB`;
+}
+
+export function formatSizeToInt(size: number) {
+  if (size < 1024) {
+    return size;
+  }
+  if (size < 1024 * 1024) {
+    return parseInt((size / 1024).toFixed(0));
+  }
+  if (size < 1024 * 1024 * 1024) {
+    return parseInt((size / 1024 / 1024).toFixed(1));
+  }
+  return parseInt((size / 1024 / 1024 / 1024).toFixed(1));
+}
+
+export function formatBytesToGb(bytes: number): number {
+  return parseInt((bytes / 1024 / 1024 / 1024).toFixed(1));
 }
 
 export function bytesToMB(bytes: number) {
