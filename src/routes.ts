@@ -9,7 +9,7 @@ export const ROUTES = {
   },
   CLIENTS: {
     CLIENTS: "/dashboard/clients",
-    CLIENT: "/dashboard/clients/:clientId",
+    CLIENT: "/dashboard/client/:clientId",
     CREATE: "/dashboard/clients/new",
   },
   USER_ACCESS: "/access/:username",

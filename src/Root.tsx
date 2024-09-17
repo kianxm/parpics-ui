@@ -4,10 +4,8 @@ import { ROUTES } from "./routes";
 
 import Site from "./pages/public/Site";
 import PublicLayout from "./layouts/PublicLayout";
-import NewLayout from "./layouts/NewLayout";
 
 import CreateClientPage from "./pages/CreateClientPage";
-import ProtectedRoute from "./lib/ProtectedRoute";
 import { ProtectedLayoutWrapper } from "./lib/ProtectedLayoutWrapper";
 import Spinner from "./components/Spinner";
 

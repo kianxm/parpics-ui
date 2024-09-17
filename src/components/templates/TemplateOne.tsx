@@ -11,7 +11,7 @@ import ViewerSignUpDialog from "../viewer/ViewerSignUpDialog";
 import { WebsiteTemplateProps } from "../../types/website";
 import { AuthContext } from "../../context/context";
 import { useContext, useState } from "react";
-import { ClientSettings } from "../../types/settings";
+import { ClientSettingsType } from "../../types/settings";
 
 // Modern Template
 const AlbumHeader = ({
@@ -25,7 +25,7 @@ const AlbumHeader = ({
   user: User | null;
   logout: () => void;
 }) => {
-  const settings: ClientSettings = client.settings;
+  const settings: ClientSettingsType = client.settings;
 
   return (
     <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-8 py-5 text-gray-800 z-10 bg-white shadow-sm">
@@ -88,7 +88,7 @@ const GridItem = ({
   handleToggleFavoritePhoto: (clientId: string, publicId: string) => void;
   index: number;
   openModal: (index: number) => void;
-  settings: ClientSettings;
+  settings: ClientSettingsType;
 }) => {
   const Content = () => (
     <div
@@ -188,7 +188,7 @@ const MasonryGrid = ({
   clientId: string;
   handleToggleFavoritePhoto: (clientId: string, publicId: string) => void;
   openModal: (index: number) => void;
-  settings: ClientSettings;
+  settings: ClientSettingsType;
 }) => {
   return (
     <div className="columns-1 sm:columns-2 lg:columns-3 px-12 md:px-24 lg:px-36 gap-4 pb-12">

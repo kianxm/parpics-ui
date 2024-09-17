@@ -1,4 +1,4 @@
-export interface ClientSettings {
+export interface ClientSettingsType {
   enableWebsite: boolean;
   allowPhotoComments: boolean;
   allowAlbumComments: boolean;

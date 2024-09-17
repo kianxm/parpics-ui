@@ -1,18 +1,20 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { Suspense } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAlbumPage, getUserById } from "../../queries/queries";
 import { templates } from "../../utils/templates";
 import { TOGGLE_FAVORITE_PHOTO } from "../../mutations/client";
-import { Viewer } from "../../types/user";
 import { Client } from "../../types/client";
 import { Photo } from "../../types/photo";
 import { useCurrentUser } from "../../utils/useCurrentUser";
+import Spinner from "../../components/Spinner";
+import { ROUTES } from "../../routes";
 
 export default function NewAlbumPage() {
   const user = useCurrentUser();
 
   const { link } = useParams();
+  const navigate = useNavigate();
 
   const { data, loading, error, refetch } = useQuery(getAlbumPage, {
     variables: { link },
@@ -20,23 +22,27 @@ export default function NewAlbumPage() {
 
   const [toggleFavoritePhoto] = useMutation(TOGGLE_FAVORITE_PHOTO);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="w-full h-full justify-center items-center">
+        <Spinner />
+      </div>
+    );
   if (error) return <div>Error: {error.message}</div>;
+
+  // Extract data for the template component
+  const client: Client = data?.getAlbumPage;
+  const photos: Photo[] = data?.getAlbumPage.photos || [];
+  const mainPhoto = photos[0];
+  const photoUrls: string[] = photos?.map((photo: Photo) => photo.url) || [];
 
   // Template handling
   const templateId = data?.getAlbumPage.websiteTemplate;
   const template = templates.find((t) => t.id === templateId);
   if (!template || !template.component) {
-    return <div>Template not found</div>;
+    navigate(ROUTES.DASHBOARD.DASHBOARD);
   }
   const TemplateComponent = template.component;
-
-  // Extract data for the template component
-  // const currentUser = userData?.getUserById as Viewer;
-  const client = data?.getAlbumPage as Client;
-  const photos = data?.getAlbumPage.photos || [];
-  const mainPhoto = photos[0];
-  const photoUrls = photos.map((photo: Photo) => photo.url);
 
   const handleToggleFavoritePhoto = async (
     clientId: string,
@@ -49,7 +55,13 @@ export default function NewAlbumPage() {
   };
 
   return (
-    <Suspense fallback={<div>Loading template...</div>}>
+    <Suspense
+      fallback={
+        <div className="w-full h-full justify-center items-center">
+          <Spinner />
+        </div>
+      }
+    >
       <TemplateComponent
         user={user}
         client={client}

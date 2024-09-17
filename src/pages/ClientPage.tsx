@@ -18,13 +18,14 @@ import {
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
-import ClientSettings from "../components/client/ClientSettings";
+
 import ClientWebsiteSettings from "../components/client/ClientWebsiteSettings";
 import { useCurrentUser } from "../utils/useCurrentUser";
+import { ClientSettingsType } from "../types/settings";
+import ClientSettings from "../components/client/ClientSettings";
 
 export default function ClientPage() {
   const user = useCurrentUser();
-  console.log(user);
 
   const { clientId } = useParams();
 
@@ -40,6 +41,7 @@ export default function ClientPage() {
 
   const client: Client = data?.getClient;
   const photos: Photo[] = data?.getClient.photos;
+  const settings: ClientSettingsType = data?.getClient.settings;
 
   const handleDeleteAll = async () => {
     try {
@@ -55,11 +57,13 @@ export default function ClientPage() {
       <div className="flex justify-between">
         <span className="font-semibold text-2xl mt-1 flex gap-2 items-center mb-2">
           {client.name}
-          <Link to={uriAlbum(user.username, client.link)}>
-            <Button variant="ghost" className="px-3 py-0">
-              <IconLink size={16} />
-            </Button>
-          </Link>
+          {settings.enableWebsite && client.photoCount !== 0 && (
+            <Link to={uriAlbum(user.username, client.link)}>
+              <Button variant="ghost" className="px-3 py-0">
+                <IconLink size={16} />
+              </Button>
+            </Link>
+          )}
           <Tag text={client.hasPaid ? CLIENT_PAID : CLIENT_UNPAID} />
         </span>
         <div className="flex gap-2">
